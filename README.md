@@ -10,7 +10,7 @@ java 知识体系
 
 
 ## 参考资料
->  [参考资料](/MD/reference.md)
+>  [参考资料](doc/reference.md)
 
 
 
