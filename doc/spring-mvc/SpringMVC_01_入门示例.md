@@ -245,11 +245,18 @@ java -jar spring-webmvc-0.0.1-SNAPSHOT-war-exec.jar
 
 ## 2.部署 DispatcherServlet 
 
-这里采用servlet3.0 Java Config 的方式配置
+这里采用servlet3.0 Java Config 的方式配置来配置web.xml
 
 
 
 ```java
+package com.ray.web;
+
+import com.ray.web.config.WebMvcConfig;
+import org.springframework.web.WebApplicationInitializer;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+
 /**
  * see the javadoc of {@link WebApplicationInitializer}
  *
@@ -262,20 +269,48 @@ java -jar spring-webmvc-0.0.1-SNAPSHOT-war-exec.jar
  * @since 2018/12/7
  *
  */
-public class WebInitializer implements WebApplicationInitializer {
+/*public class WebInitializer implements WebApplicationInitializer {
 
-   public void onStartup(ServletContext servletContext) throws ServletException {
-      // Create the 'root' Spring application context
+	public void onStartup(ServletContext servletContext) throws ServletException {
+		// Create the 'root' Spring application context
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
-      rootContext.setServletContext(servletContext);
+		rootContext.setServletContext(servletContext);
         rootContext.register(WebMvcConfig.class);
 
         // Register and map the dispatcher servlet
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(rootContext));
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("/");
-   }
+	}
+}*/
+
+/**
+ *  采用模板方法模式，具体逻辑同上述代码相同
+ *  for getRootConfigClasses, you can see {@link AbstractAnnotationConfigDispatcherServletInitializer .createRootApplicationContext()}
+ *  for getServletConfigClasses, you can see {@link AbstractAnnotationConfigDispatcherServletInitializer .createServletApplicationContext()}
+ *  for getServletMappings , you can see {@link `AbstractDispatcherServletInitializer.registerDispatcherServlet()`}
+ *
+ *
+ */
+public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+
+	@Override
+	protected Class<?>[] getRootConfigClasses() {  // web.xml
+		return null;
+	}
+
+	@Override
+	protected Class<?>[] getServletConfigClasses() { // DispatcherServlet
+		return new Class[]{WebMvcConfig.class};
+	}
+
+	@Override
+	protected String[] getServletMappings() {
+		return new String[]{"/"};
+	}
+
 }
+
 ```
 
 
@@ -283,31 +318,42 @@ public class WebInitializer implements WebApplicationInitializer {
 ## 3.配置 Web MVC 组件 
 
 ```java
+package com.ray.web.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
+
 /**
  * Spring Web MVC 配置（类）
- *
+ * see {@link WebMvcConfigurer}
  * @author shirayner
  * @since 2018/12/7
  */
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("com.ray.web")
-public class WebMvcConfig {
-   //     <!--<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
-   //        <!--<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>-->
-   //        <!--<property name="prefix" value="/WEB-INF/jsp/"/>-->
-   //        <!--<property name="suffix" value=".jsp"/>-->
-   //    <!--</bean>-->
+@ComponentScan(basePackages = "com.ray.web")
+public class WebMvcConfig  implements WebMvcConfigurer {
 
-   @Bean
-   public ViewResolver viewResolver(){
-      InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-      viewResolver.setViewClass(JstlView.class);
-      viewResolver.setPrefix("/WEB-INF/classes/views/");
-      viewResolver.setSuffix(".jsp");
-      return viewResolver;
-   }
+	/**
+	 *  配置 ViewResolver
+	 * @return
+	 */
+	@Bean
+	public ViewResolver viewResolver(){
+		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+		viewResolver.setViewClass(JstlView.class);
+		viewResolver.setPrefix("/WEB-INF/jsp/");
+		viewResolver.setSuffix(".jsp");
+		return viewResolver;
+	}
+
 }
 ```
 
@@ -326,6 +372,17 @@ public class WebMvcConfig {
 同上
 
 
+
+
+
+
+
+
+
+# 四、参考资料
+
+1. [Spring Web MVC](https://docs.spring.io/spring/docs/5.1.4.BUILD-SNAPSHOT/spring-framework-reference/web.html#mvc-config)
+2. [Spring MVC 4.2.4.RELEASE 中文文档](https://spring-mvc.linesh.tw/publish/21-15/code-based-servlet-container-initialization.html)
 
 
 
