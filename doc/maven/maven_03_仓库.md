@@ -65,7 +65,7 @@
 
 对于Maven来说，每个用户只有一个本地仓库，但可以配置访问很多远程仓库。
 
-#### 3.3.1中央仓库
+#### 3.3.1 中央仓库
 
 中央仓库是Maven核心自带的远程仓库，它包含了绝大部分开源的构件。在默认配置下，当本地仓库没有 Maven需要的构件的时候，它就会尝试从中央仓库下载。
 
@@ -221,13 +221,92 @@ distributionManagement包含 repository 和 snapshotRepository 子元素，前�
 
 
 
+> 当依赖的版本不明晰的时候，如RELEASE、LATEST和SNAPSHOT，Maven就需要基于更新远程仓库的更新策略来检查更新。在第6.4节提到的仓库配置中，有一些配置与此有关：
+>
+> - 首先是 `<releases><enabled>` 和 `<snapshots><enabled>`，只有仓库开启了对于发布版本的支持时，才能访问该仓库的发布版本构件信息，对于快照版本也是同理；
+> - 其次要注意的是 `<releases>`和`<snapshots>`的子元素 `<updatePolicy>`，该元素配置了检查更新的频率，每日检查更新、永远检查更新、从不检查更新、自定义时间间隔检查更新等。
+> - 最后，用户还可以从命令行加入参数-U，强制检查更新，使用参数后，Maven就会忽略 `<updatePolicy>` 的配置。
+>
+> 当Maven检查完更新策略，并决定检查依赖更新的时候，就需要检查仓库元数据maven-metadata.xml。
+
+
+
+> 仓库元数据并不是永远正确的，有时候当用户发现无法解析某些构件，或者解析得到错误构件的时候，就有可能是出现了仓库元数据错误，这时就需要手工地，或者使用工具（如Nexus）对其进行修复。
+
+
+
 ## 6.镜像
 
+如果仓库X可以提供仓库Y存储的所有内容，那么就可以认为X是Y的一个镜像。
 
 
 
+###  6.1 配置中央仓库镜像
+
+```xml
+<settings>
+...
+  <mirrors>
+    <mirror>
+      <id>aliyun-maven</id>
+      <name>aliyun maven</name>
+      <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+      <mirrorOf>central</mirrorOf>
+    </mirror>
+  </mirrors>
+...
+</settings>
+```
 
 
+
+- id : 镜像ID
+- name : 镜像名称，为了可读性
+- url  :  镜像仓库地址
+- mirrorOf :  谁的镜像。` <mirrorOf>` 的值为central，表示配置为中央仓库的镜像，任何对于中央仓库的请求都会转至该镜像，用户也可以使用同样的方法配置其他仓库的镜像。
+
+
+
+> - 三个元素id、name、url与一般仓库配置无异，表示该镜像仓库的唯一标识符、名称以及地址。
+>
+>     类似地，如果该镜像需要认证，也可以基于该id配置仓库认证。
+>
+>
+>
+> - mirrorOf 节点还支持更加高级的配置：
+>     - `<mirrorOf>*</mirrorOf>`：匹配所有远程仓库。
+>     - `<mirrorOf>external：*</mirrorOf>`：匹配所有远程仓库，使用localhost的除外，使用file：//协议的除外。也就是说，匹配所有不在本机上的远程仓库。
+>     - `<mirrorOf>repo1，repo2</mirrorOf>`：匹配仓库repo1和repo2，使用逗号分隔多个远程仓库。
+>     - `<mirrorOf>*，！repo1</mirrorOf>`：匹配所有远程仓库，repo1除外，使用感叹号将仓库从匹配中排除。
+
+
+
+需要注意的是：
+
+**由于镜像仓库完全屏蔽了被镜像仓库，当镜像仓库不稳定或者停止服务的时候，Maven仍将无法访问被镜像仓库，因而将无法下载构件。**
+
+
+
+### 6.3 使用私服作为镜像
+
+由于私服可以代理任何外部的公共仓库（包括中央仓库），因此，对于组织内部的Maven用户来说，使用一个私服地址就等于使用了所有需要的外部仓库，这可以将配置集中到私服，从而简化Maven本身的配置。
+
+在这种情况下，任何需要的构件都可以从私服获得，私服就是所有仓库的镜像。
+
+```xml
+<settings>
+...
+  <mirrors>
+    <mirror>
+      <id>nexus-ray</id>
+      <name>my maven nexus</name>
+      <url>http://192.168.12.101/nexus/content/groups/public/</url>
+      <mirrorOf>*</mirrorOf>
+    </mirror>
+  </mirrors>
+...
+</settings>
+```
 
 
 
