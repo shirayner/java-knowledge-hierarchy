@@ -1,0 +1,59 @@
+[TOC]
+
+
+
+# 一、前言
+
+
+
+
+
+
+
+# 二、构建相关插件
+
+以下插件与maven的生命周期对应
+
+## 1.compile
+
+由于历史原因，Maven的compiler插件默认只支持编译Java1.5，因此需要配置该插件使其支持更高版本的 Java 
+
+```xml
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+          <encoding>UTF-8</encoding>
+          <compilerArguments>
+            <extdirs>${project.basedir}/src/main/webapp/WEB-INF/lib</extdirs>
+          </compilerArguments>
+        </configuration>
+      </plugin>
+```
+
+
+
+
+
+## 2.test
+
+
+
+
+
+## 3.package
+
+
+
+
+
+
+
+
+
+# 参考资料
+
+1. [常用Maven插件介绍](http://www.importnew.com/23928.html)
+
