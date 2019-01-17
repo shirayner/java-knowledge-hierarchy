@@ -8,7 +8,8 @@
 
 # 二、精选资料
 
-
+1. [man.linuxde.net](http://man.linuxde.net/)
+2. [jaywcjlove/linux-command—github](https://github.com/jaywcjlove/linux-command)
 
 
 

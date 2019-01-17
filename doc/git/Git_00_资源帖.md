@@ -1,6 +1,7 @@
 # 一、官方资料
 
 1.  [《Pro Git》](https://git-scm.com/book/zh/v2)
+2.  [git-scm.com/doc](https://www.git-scm.com/doc)
 
 
 
