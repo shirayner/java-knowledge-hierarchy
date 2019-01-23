@@ -1,0 +1,34 @@
+# 1. Eclipse
+.classpath
+.project
+.settings/
+
+# 2. idea
+.idea/
+*.iml
+*.iws
+out/
+
+# 3. Mac
+.DS_Store
+
+# 4.Maven
+target/
+
+# 5. gradle
+.gradle/
+build/
+
+
+# 6. jrebel
+*rebel.xml*
+
+
+# 7. 日志
+log/
+logs/
+*.log
+
+
+# 8.无用压缩包
+*.zip
