@@ -699,5 +699,122 @@ gunzip file.txt.gz
 
 
 
-
 ​              
+
+# 四、其他命令
+
+## 1.命令替换
+
+命令替换允许你将shell命令的输出赋给变量。
+
+
+
+有两种方法可以将命令输出赋给变量：
+
+-  反引号符(`)
+- $()  格式
+
+
+
+```shell
+testing=$(date)
+testing1=`date`
+echo "The date and time are: " testing1
+```
+
+
+
+
+
+## 2.重定向输入输出
+
+- 有些时候你想要保存某个命令的输出，而不仅仅只是让它显示在显示器上。
+
+- bashshell提供了几个操作符，可以将命令的输出重定向到另一个位置（比如文件）。
+
+- 重定向可以用于输入，也可以用于输出，可以将文件重定向到命令输入。
+
+
+
+### 2.1 重定向输出
+
+最基本的重定向将命令的输出发送到一个文件中：
+
+```shell
+command > outputfile   #  将命令输出重定向到outputfile, 会覆盖文件
+```
+
+
+
+example:
+
+```shell
+[ray@localhost dev]$ date  > file1          # 将命令输出重定向到file1
+[ray@localhost dev]$ ls -l file1
+-rw-rw-r--. 1 ray ray 29 Jan 24 15:21 file1
+[ray@localhost dev]$ cat file1
+Thu Jan 24 15:21:14 CST 2019
+```
+
+
+
+有时，你可能并不想覆盖文件原有内容，而是想要将命令的输出**追加**到已有文件中：
+
+```shell
+command >>  outputfile   # 将命令输出以追加的方式重定向到 outputfile
+```
+
+
+
+
+
+### 2.2 重定向输入
+
+输入重定向将文件的内容重定向到命令
+
+```
+command  <  inputfile
+```
+
+
+
+## 3.管道
+
+有时需要将一个命令的输出作为另一个命令的输入。这可以用重定向来实现，只是有些笨拙。
+
+```
+rpm -qa > rpm.list
+sort < rpm.list
+```
+
+上述过程可以管道来进行简化。
+
+
+
+管道被放在命令之间，将一个命令的输出重定向到另一个命令中：
+
+```
+command1 | command2
+```
+
+> - 不要以为由管道串起的两个命令会依次执行。Linux系统实际上会同时运行这两个命令，在系统内部将它们连接起来。
+> - **在第一个命令产生输出的同时，输出会被立即送给第二个命令**。数据传输不会用到任何中间文件或缓冲区。
+
+
+
+exmaple:
+
+```shell
+rpm -qa  | sort
+```
+
+
+
+
+
+
+
+
+
+
+
