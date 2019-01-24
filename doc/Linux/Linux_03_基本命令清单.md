@@ -241,7 +241,59 @@ tail [OPTION]... [FILE]...
 
 
 
-​             
+      ### 1.6  查找文件
+
+      #### 1.6.1 一般查找 find
+
+```shell
+find PATH -name FILENAME  # 在 PATH 下查找名为 FILENAME 的文件
+```
+
+
+
+example:
+
+```shell
+[root@localhost ~]# find / -name httpd.conf   # 在根目录查找 httpd.conf
+[root@localhost ~]# find / -name *.conf   # 在根目录查找后缀名为 .conf 的文件
+```
+
+
+
+#### 1.6.2 数据库查找 locate
+
+> 与find不同，locate命令依赖于一个数据库文件，Linux系统默认每天会检索一下系统中的所有文件，然后将检索到的文件记录到数据库中。在运行locate命令的时候可直接到数据库中查找记录并打印到屏幕上，所以使用locate命令要比find命令反馈更为迅速。在执行这个命令之前一般需要执行updatedb命令（这不是必须的，因为系统每天会自动检索并更新数据库信息，但是有时候会因为文件发生了变化而系统还没有再次更新而无法找到实际上确实存在的文件。所以有时需要主动运行该命令，以创建最新的文件列表数据库），以及时更新数据库记录。下面是使用locate命令来查找httpd.conf文件：
+
+
+
+```shell
+[root@localhost ~]# updatedb 
+[root@localhost ~]# locate httpd.conf
+```
+
+
+
+
+
+#### 1.6.3 查找执行文件：which/whereis
+
+which用于从系统的PATH变量所定义的目录中查找可执行文件的绝对路径:
+
+```shell
+which passwd
+```
+
+
+
+使用whereis也能查到其路径，但是和which不同的是，它不但能找出其二进制文件，还能找出相关的man文件：
+
+```shell
+whereis passwd
+```
+
+
+
+
 
 
 
