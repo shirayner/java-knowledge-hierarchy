@@ -7,24 +7,24 @@
 数据表准备：
 
 ```mysql
-CREATE TABLE IF NOT EXISTS USER (
-	id BIGINT ( 12 ) NOT NULL AUTO_INCREMENT,
-	user_name VARCHAR ( 45 ) NOT NULL,
-	password VARCHAR ( 45 ) NOT NULL,
-    sex VARCHAR ( 4 ) NOT NULL,
-	age INT ( 4 ) UNSIGNED DEFAULT NULL,
-	city VARCHAR ( 45 ) DEFAULT NULL,
-	start_date DATE DEFAULT NULL,
-	end_date DATE DEFAULT NULL,
-	description VARCHAR ( 200 ) DEFAULT NULL,
-	PRIMARY KEY ( id ) 
+create table if not exists user (
+	id bigint ( 12 ) not null auto_increment,
+	user_name varchar ( 45 ) not null,
+	password varchar ( 45 ) not null,
+    sex varchar ( 4 ) not null,
+	age int ( 4 ) unsigned default null,
+	city varchar ( 45 ) default null,
+	start_date date default null,
+	end_date date default null,
+	description varchar ( 200 ) default null,
+	primary key ( id ) 
 );
 
 insert into user (user_name, password,sex,age,city) values ('tom' ,'123','男',11,'shanghai');
 insert into user (user_name, password,sex,age,city) values ('jack' ,'123','男',21,'shanghai');
 insert into user (user_name, password,sex,age,city) values ('mike' ,'123','男',31,'shanghai');
 insert into user (user_name, password,sex,age,city) values ('caly' ,'123','女',31,'shanghai');
-insert into user (user_name, password,sex,age,city) values ('Carter' ,'123','男',41,'wuhan');
+insert into user (user_name, password,sex,age,city) values ('carter' ,'123','男',41,'wuhan');
 insert into user (user_name, password,sex,age,city) values ('bush' ,'123','男',51,'wuhan');
 insert into user (user_name, password,sex,age,city) values ('jerry' ,'123','男',61,'wuhan');
 insert into user (user_name, password,sex,age,city) values ('xiaohong' ,'123','女',41,'wuhan');

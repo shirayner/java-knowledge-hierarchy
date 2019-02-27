@@ -269,7 +269,316 @@ shell>  mysqlimport -uroot -p test --fields-enclosed-by =\" --fields-terminated-
 
 # 三、物理备份和恢复
 
+物理备份和逻辑备份相比最大优点是备份和恢复的速度都很快，这是因为物理备份的原理都是基于文件拷贝。
 
+物理备份分为如下两种：
+
+（1）冷备份：最直接的备份方式
+
+> - 首先停掉数据库服务，然后CP数据文件，恢复时停止MySQL，先进行操作系统级别恢复数据文件，然后重启MySQL服务，使用MYSQLBINLOG工具恢复自备份以来的所有BINLOG。
+>
+> 这种方式虽然简单，而且对各个存储引擎都支持，但是有一个非常大的弊端就是需要关闭数据库服务。在当前的大多信息系统都是不允许长时间停机的。
+
+
+
+（2）热备份：对于不同的存储引擎方法也不同
+
+①MyISAM存储引擎，本质就是将要备份的表加读锁，然后再CP数据文件到备份目录。方法有如下两种。
+
+方法1：使用MYSQLHOTCOPY工具。MYSQLHOTCOPY工具是MySQL自带的热备份工具，
+
+```mysql
+mysqlhotcopy db_name [/path/to/new_directory]
+```
+
+方法二：手工锁表COPY
+
+```mysql
+mysql >  flush tables for read;
+
+-- 然后CP数据文件到备份目录下。
+
+```
+
+
+
+# 四、各种备份与恢复方法实现
+
+## 1. `SELECT ... INTO OUTFILE`
+
+利用`SELECT ... INTO OUTFILE`实现数据的备份与还原。
+
+（1）备份数据
+
+```mysql
+mysql > use hellodb; --  打开 hellodb 库 
+mysql > select * from students;  -- 查看 students 的属性
+mysql > select * from students where Age > 30 into outfile ‘/tmp/stud.txt’;  -- 将年龄大于30的同学的信息备份出来
+```
+
+
+
+（2）查看备份数据
+
+```shell
+shell >  cd  /tmp 
+shell >  cat stud.txt
+```
+
+
+
+（3）数据被破坏
+
+>  会发现是个文本文件。所以不能直接导入数据库了。需要使用LOADDATAINFILE恢复回到MySQL服务器端，删除年龄大于30的用户，模拟数据被破坏，
+
+```mysql
+mysql > delete from students where Age > 30;
+```
+
+
+
+（4）恢复数据
+
+```mysql
+mysql > load data infile '/tmp/stud.txt' into table students;
+```
+
+
+
+## 2. `mysqldump`
+
+利用mysqldump工具对数据进行备份和还原。
+
+mysqldump常用来做温备，所以首先需要对想备份的数据施加读锁。
+
+
+
+### 2.1 施加读锁的方式
+
+（1）直接在备份的时候添加选项
+
+> - lock-all-tables：是对要备份的数据库的所有表施加读锁。
+> - lock-table：仅对单张表施加读锁，即使是备份整个数据库，它也是在备份某张表的时候才对该表施加读锁，因此适用于备份单张表。
+
+
+
+（2）在服务器端书写命令
+
+```mysql
+mysql > flush tables with read lock;  -- 施加锁，表示把位于内存上的表统统都同步到磁盘上去，然后施加读锁
+mysql > flush tables with read lock;  -- 释放读
+```
+
+但这对于InnoDB存储引擎来讲，虽然也能够请求到读锁，但是不代表它的所有数据都已经同步到磁盘上，
+
+因此当面对InnoDB的时候，要使用如下命令，看看InnoDB所有的数据都已经同步到磁盘上，才进行备份操作。
+
+```mysql
+mysql >  show engine innodb status;
+```
+
+
+
+### 2.2 备份过程
+
+采取的备份策略为：完全备份+增量备份+二进制日志
+
+
+
+（1）先给数据库做完全备份：
+
+```shell
+shell >  mysqldump -uroot --single-transaction --master-data = 2 --databases hellodb > /backup/hellodb_`date+%F`.sql
+```
+
+> - `--single-transaction`：基于此选项能实现热备InnoDB表，因此，不需要同时使用`--lock-all-tables`；
+> - `--master-data=2`：记录备份那一时刻的二进制日志的位置，并且注释掉，1是不注释的；
+> - `--databases hellodb`：指定备份的数据库。
+
+
+
+（2）回到MySQL服务器端更新数据
+
+```mysql
+mysql > create table tb1( id int);  -- 创建表
+mysql > insert into tb1 values( 1),( 2),( 3);   -- 插入数据，这里只做演示，随便插入了几个数
+```
+
+
+
+（3）先查看完全备份文件里边记录的位置
+
+```shell
+shell > cat hellodb_2013-09-08.sql | less 
+
+--CHANGE MASTER TO MASTER_LOG_FILE =' mysql-bin.000013', MASTER_LOG_POS = 15684;  -- 记录了二进制日志的位
+```
+
+
+
+
+
+
+
+显示此时的二进制日志的位置，从备份文件里边记录的位置到我们此时的位置，即为增量的部
+
+
+
+
+
+
+
+# 四、演示 `SELECT ... INTO OUTFILE` 备份与恢复
+
+## 1. 准备数据库以及数据表
+
+
+
+- **studymysql.sql**
+
+```mysql
+create database if not exists studymysql;
+use studymysql;
+create table if not exists user (
+	id bigint ( 12 ) not null auto_increment,
+	user_name varchar ( 45 ) not null,
+	password varchar ( 45 ) not null,
+    sex varchar ( 4 ) not null,
+	age int ( 4 ) unsigned default null,
+	city varchar ( 45 ) default null,
+	start_date date default null,
+	end_date date default null,
+	description varchar ( 200 ) default null,
+	primary key ( id ) 
+);
+
+insert into user (user_name, password,sex,age,city) values ('tom' ,'123','男',11,'shanghai');
+insert into user (user_name, password,sex,age,city) values ('jack' ,'123','男',21,'shanghai');
+insert into user (user_name, password,sex,age,city) values ('mike' ,'123','男',31,'shanghai');
+insert into user (user_name, password,sex,age,city) values ('caly' ,'123','女',31,'shanghai');
+insert into user (user_name, password,sex,age,city) values ('carter' ,'123','男',41,'wuhan');
+insert into user (user_name, password,sex,age,city) values ('bush' ,'123','男',51,'wuhan');
+insert into user (user_name, password,sex,age,city) values ('jerry' ,'123','男',61,'wuhan');
+insert into user (user_name, password,sex,age,city) values ('xiaohong' ,'123','女',41,'wuhan');
+insert into user (user_name, password,sex,age,city) values ('xiaoming' ,'123','男',41,'beijing');
+```
+
+
+
+登录shell，创建 studymysql.sql
+
+```bash
+[ray@localhost mysql]$ pwd
+/home/ray/dev/mysql
+[ray@localhost mysql]$ vim studymysql.sql
+
+# 将上述文件粘贴，并保存
+
+```
+
+
+
+登录mysql
+
+```shell
+shell > mysql -uroot -p
+```
+
+
+
+查看数据库列表
+
+```
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| example            |
+| mysql              |
+| performance_schema |
++--------------------+
+4 rows in set (0.00 sec)
+```
+
+
+
+准备 `studymysql` 数据库： 使用 source 命令运行sql
+
+```mysql
+mysql> source /home/ray/dev/mysql/studymysql.sql
+Query OK, 1 row affected (0.00 sec)
+
+Database changed
+Query OK, 0 rows affected (0.08 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+-- 查看数据库列表，发现已经有 studymysql 数据库了
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| example            |
+| mysql              |
+| performance_schema |
+| studymysql         |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> use studymysql  			-- 切换数据库
+Database changed
+
+mysql> show tables;    		 	-- 查看数据表列表
++----------------------+
+| Tables_in_studymysql |
++----------------------+
+| user                 |
++----------------------+
+1 row in set (0.00 sec)
+
+mysql> select * from user;  	 -- 查看user 表
++----+-----------+----------+-----+------+----------+------------+----------+-------------+
+| id | user_name | password | sex | age  | city     | start_date | end_date | description |
++----+-----------+----------+-----+------+----------+------------+----------+-------------+
+|  1 | tom       | 123      | 男  |   11 | shanghai | NULL       | NULL     | NULL        |
+|  2 | jack      | 123      | 男  |   21 | shanghai | NULL       | NULL     | NULL        |
+|  3 | mike      | 123      | 男  |   31 | shanghai | NULL       | NULL     | NULL        |
+|  4 | caly      | 123      | 女  |   31 | shanghai | NULL       | NULL     | NULL        |
+|  5 | carter    | 123      | 男  |   41 | wuhan    | NULL       | NULL     | NULL        |
+|  6 | bush      | 123      | 男  |   51 | wuhan    | NULL       | NULL     | NULL        |
+|  7 | jerry     | 123      | 男  |   61 | wuhan    | NULL       | NULL     | NULL        |
+|  8 | xiaohong  | 123      | 女  |   41 | wuhan    | NULL       | NULL     | NULL        |
+|  9 | xiaoming  | 123      | 男  |   41 | beijing  | NULL       | NULL     | NULL        |
++----+-----------+----------+-----+------+----------+------------+----------+-------------+
+9 rows in set (0.00 sec)
+
+```
+
+
+
+## 2. 备份数据
+
+```
+select * from 
+```
 
 
 

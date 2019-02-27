@@ -51,7 +51,7 @@ rpm -e --nodeps mysql　　// 强力删除模式，如果使用上面命令删�
 - d.更新添加yum源
 
 ```shell
-wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+wget http://repo.mysql.com/mysql80-community-release-el7-2.noarch.rpm
 rpm -ivh mysql-community-release-el7-5.noarch.rpm
 yum update
 ```
@@ -95,14 +95,38 @@ sudo yum-config-manager --enable mysql57-community
 
 #### 1.2.3 启动mysql
 
+- 方式一
+
+    ```shell
+    sudo service mysqld restart   # 重启mysql
+    sudo service mysqld status    # 查看mysql运行状态
+    ```
+
+    
+
+- 方式二
+
+    ```shell
+    systemctl start mysqld   # 启动mysql
+    systemctl status mysqld  # 查看mysql运行状态
+    ```
+
+    
+
+#### 1.2.4 设置开机自启
+
 ```shell
- sudo service mysqld restart   # 重启mysql
- sudo service mysqld status    # 查看mysql运行状态
+systemctl enable mysqld  # 设置开机自启
+systemctl daemon-reload
 ```
 
 
 
-#### 1.2.4 修改密码
+
+
+
+
+#### 1.2.5 修改密码
 
 （1）默认密码
 
@@ -128,9 +152,50 @@ sudo mysql -h hostname -u username -p   # longin on remote server
 
 （3）修改密码
 
-可通过如下方式修改密码：
+```mysql
+mysql> alter user 'root'@'localhost' identified by 'Ray12345.';
+```
 
 
+
+mysql 8 修改的密码必须符合密码校验规则:
+
+> 参见官方文档：[The Password Validation Component](https://dev.mysql.com/doc/refman/8.0/en/validate-password.html)
+
+
+
+validate_password_policy 有以下取值： 
+
+![Mysql Password Validation](images/20180905161539422.png)
+
+
+
+默认是1，即MEDIUM，所以刚开始设置的密码必须符合长度，且必须含有数字，小写或大写字母，特殊字符。 
+
+
+
+有时候，只是为了自己测试，不想密码设置得那么复杂，譬如说，我只想设置root的密码为123456。 
+必须修改两个全局参数：
+
+```mysql
+-- 1.修改validate_password_policy参数的值
+mysql> set global validate_password_policy=0;
+
+-- 2.validate_password_length(密码长度)参数默认为8，我们修改为1
+mysql> set global validate_password_length=1;
+```
+
+完成之后再次执行修改密码语句即可成功
+
+```mysql
+mysql> alter user 'root'@'localhost' identified by '123456.';
+```
+
+
+
+
+
+还可尝试如下方式修改密码（mysql8及以上可能不行）：
 
 ```shell
 shell>  mysqladmin -u root password "root";   # 可行
@@ -145,8 +210,14 @@ mysql> set password for 'root'@'localhost' =password('root');
 
 
 ```mysql
-# ALTER USER 'root'@'localhost' IDENTIFIED BY 'root!';   # 不可行
+# ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';   # 不可行
 ```
+
+
+
+
+
+
 
 
 
@@ -231,26 +302,38 @@ flush privileges;
 
 #### 2.2.2 新建用户
 
-```shell
-mysql> create user 'username'@'%' identified by 'password';    # 新建用户
-```
+创建用户有如下方式：
+
+- 方式一
+
+    ```mysql
+    mysql> create user 'username'@'%' identified by 'password';    -- 新建用户
+    ```
+
+    例如：
+
+    ```mysql
+    mysql> create user 'ray'@'%' identified by 'Ray12345.';    -- 新建用户
+    ```
 
 
 
-如：
+- 方式二
 
-```mysql
-mysql> create user 'ray'@'%' identified by 'ray';    # 新建用户
-```
+    ```mysql
+    -- 创建用户并授权
+    mysql> grant all  on *.* to 'ray'@'%' identified by 'Ray12345.';   -- 暂时有问题
+    mysql> flush privileges;
+    ```
 
-
+    
 
 #### 2.2.3 授权用户
 
 添加一个允许远程连接的帐户
 
 ```mysql
-mysql> grant all  on *.* to ray@'%' identified by 'ray';
+mysql> grant all  on *.* to ray@'%'；
 mysql> flush privileges;
 ```
 
@@ -262,10 +345,11 @@ mysql> flush privileges;
 
 # 参考资料
 
-1. [Installing MySQL on Linux Using the MySQL Yum Repository](https://dev.mysql.com/doc/refman/8.0/en/linux-installation-yum-repo.html)
-2. [MySQL Documentation](https://dev.mysql.com/doc/)
-3. https://linuxize.com/post/install-mysql-on-centos-7/
-4. [[centos7 mysql数据库安装和配置](https://www.cnblogs.com/starof/p/4680083.html)](https://www.cnblogs.com/starof/p/4680083.html)
+1. [CentOS7 yum 安装与配置MySQL5.7](https://www.cnblogs.com/ianduin/p/7679239.html)
+2. [Installing MySQL on Linux Using the MySQL Yum Repository](https://dev.mysql.com/doc/refman/8.0/en/linux-installation-yum-repo.html)
+3. [MySQL Documentation：Installing MySQL on Linux Using the MySQL Yum Repository](https://dev.mysql.com/doc/refman/8.0/en/linux-installation-yum-repo.html)
+4. https://linuxize.com/post/install-mysql-on-centos-7/
+5. [[centos7 mysql数据库安装和配置](https://www.cnblogs.com/starof/p/4680083.html)](https://www.cnblogs.com/starof/p/4680083.html)
 
 
 
