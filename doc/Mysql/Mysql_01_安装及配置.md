@@ -250,10 +250,12 @@ mysql> set password for 'root'@'localhost' =password('root');
 ```properties
 [mysqld]
 character-set-server=utf8
-[client]
-default-character-set=utf8
+
 [mysql]
 default-character-set=utf8
+
+[client]
+character-set-server=utf8
 ```
 
 
