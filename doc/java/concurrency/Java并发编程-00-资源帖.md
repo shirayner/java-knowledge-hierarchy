@@ -14,3 +14,11 @@
 2. [Java 并发编程-极客学院](http://wiki.jikexueyuan.com/project/java-concurrency/)
 3. 
 
+
+
+
+
+# 三、推荐书籍
+
+1. 《Java并发编程实战》
+2. 《Java并发编程的艺术》
