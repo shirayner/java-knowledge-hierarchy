@@ -4,6 +4,11 @@
 
 本文转自：[gitmoji的使用-wenjunjiang](https://www.wenjunjiang.win/2016/11/22/gitmoji%E7%9A%84%E4%BD%BF%E7%94%A8/)
 
+可用的表情列表见：
+
+- [gitmoji-github](https://github.com/carloscuesta/gitmoji/)
+- [emoji-cheat-sheet.com--github](https://github.com/WebpageFX/emoji-cheat-sheet.com)
+
 
 
 执行`git commit` 使用`emoji`可以打个标签，使得此次 commit 的主要工作得以凸现，也能够使得其在整个提交历史中易于区分与查找
