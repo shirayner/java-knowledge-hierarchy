@@ -6,7 +6,13 @@
 
 # 前言
 
-# 一、语法说明
+# 一、命令清单
+
+
+
+
+
+# 一、合并远程分支到本地分支
 
 ## 1.`git fetch`
 
@@ -17,19 +23,7 @@ $ git fetch <远程主机名> <分支名> 		# 注意之间有空格
 
 
 
-## 2.`git pull`
-
-```bash
-$ git pull <远程主机名> <远程分支名>:<本地分支名>  # 取回远程主机某个分支的更新，再与本地的指定分支合并
-```
-
-
-
-
-
-# 二、合并远程分支到本地分支
-
-## 1.`git fetch`
+示例：
 
 ```bash
 $ git fetch origin master:temp        # 从远程的origin仓库的master分支下载到本地并新建一个分支temp
@@ -45,10 +39,16 @@ $ git branch -d temp                  # 删除temp
 
 ## 2.`git pull`
 
+```bash
+$ git pull <远程主机名> <远程分支名>:<本地分支名>  # 取回远程主机某个分支的更新，再与本地的指定分支合并
+```
+
+
+
 如果远程分支是与当前分支合并，则冒号后面的部分可以省略：
 
 ```bash
-$ git pull origin master
+$ git pull origin master  # 拉取远程master分支，并合并到本地当前分支
 ```
 
 
