@@ -68,7 +68,7 @@ port=27017
 进入bin目录，通过执行`mongod.exe`命令来启动MongoDB服务端
 
 ```shell
-mongod.exe --config "C:\dev-env\Mongodb\mongodb-win32-x86_64-2008plus-ssl-4.0.6\mongo.conf"
+mongod.exe --config  "../mongo.conf"
 ```
 
 
