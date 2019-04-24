@@ -2,19 +2,19 @@
 
 
 
-# 一、前言
+# 前言
 
-上一节，我们使用springboot 实现了一个简单的请求响应流程。
-
-
-
-下面我们尝试使用Spring MVC来实现一组对User对象操作的RESTful API，配合注释详细说明在Spring MVC中如何映射HTTP请求、如何传参、如何编写单元测试。
+上一节 `SpringBoot`快速入门中 ，我们实现了一个简单的请求响应流程。
 
 
 
+下面我们将尝试使用Spring MVC来实现一组对User对象操作的RESTful API，配合注释详细说明在Spring MVC中如何映射HTTP请求、如何传参、如何编写单元测试。
 
 
-# 二、实例
+
+
+
+# 二、构建Restful API及其测试
 
 ## 1. 引入依赖
 

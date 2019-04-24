@@ -114,9 +114,10 @@ springboot :  2
 ```groovy
 buildscript {
     ext {
-        springBootVersion = '2.1.1.RELEASE'
+        springBootVersion = '2.1.4.RELEASE'
     }
     repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         mavenCentral()
     }
     dependencies {
@@ -144,8 +145,6 @@ allprojects {
 subprojects {
 
     //应用插件
-    apply plugin: 'idea'
-    apply plugin: 'maven'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
 
@@ -153,16 +152,27 @@ subprojects {
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
     }
 
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
     dependencies {
-        compile('org.springframework.boot:spring-boot-starter-web')
-        testCompile('org.springframework.boot:spring-boot-starter-test')
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
     }
 }
 
 repositories {
     maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
-    mavenCentral()
+
 }
+
+
 ```
 
 
@@ -343,7 +353,7 @@ SpringBoot项目启动有如下几种方式
 
 
 
-使用如下命令运行jar包
+然后使用如下命令运行jar包
 
 ```
 java -jar 
