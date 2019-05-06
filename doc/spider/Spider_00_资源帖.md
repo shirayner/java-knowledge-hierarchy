@@ -25,4 +25,6 @@
 # 参考资料
 
 1. [WebMagic实现分布式抓取以及断点抓取](http://nullpointer.pw/WebMagic%E5%AE%9E%E7%8E%B0%E5%88%86%E5%B8%83%E5%BC%8F%E6%8A%93%E5%8F%96.html)
+2. [WebMagic-Avalon之分布式实现方案](https://my.oschina.net/flashsword/blog/207626?p=2)
+3. 
 
