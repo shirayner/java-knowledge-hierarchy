@@ -23,5 +23,6 @@
 # 二、精选资料
 
 1. [The Gradle build system- Tutorial](https://www.vogella.com/tutorials/Gradle/article.html)
-2. 
+2. [Gradle User Guide 中文版](http://blog.didispace.com/books/GradleUserGuide/)
+3. 
 
