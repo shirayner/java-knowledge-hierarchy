@@ -132,6 +132,18 @@ public class ThymeleafProperties {
 
 
 
+关于默认配置也可在`spring-boot-autoconfigure`工程下的的`spring-configuration-metadata.json`文件中查看，如下图：
+
+![1557409472941](images/1557409472941.png)
+
+
+
+
+
+
+
+
+
 ### 3.2 修改`application.yml`
 
 ```yml
