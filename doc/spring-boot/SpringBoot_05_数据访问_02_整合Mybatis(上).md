@@ -51,7 +51,7 @@ include 'spring-boot-05-mybatis'
 
 ### 2.2 引入`Mybatis`依赖
 
-将子模块`spring-boot-05-Mybatis` 的`build.gradle`修改为如下内容：
+将子模块`spring-boot-05-mybatis` 的`build.gradle`修改为如下内容：
 
 ```groovy
 dependencies {

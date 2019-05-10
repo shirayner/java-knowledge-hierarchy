@@ -158,7 +158,7 @@ pagehelper:
 
 （1）配置属性的来源
 
-Mybatis以及通用Mapper的可选配置项可见`tk.mybatis：mapper-spring-boot-autoconfigure`工程下的`spring-configuration-metadata.json`文件，在这个json文件中，我们可以看到有哪些可选配置项，以及配置项是对应那个Java类的哪个属性
+Mybatis以及通用Mapper的可选配置项可见`tk.mybatis：mapper-spring-boot-autoconfigure`工程下的`spring-configuration-metadata.json`文件，在这个json文件中，我们可以看到有哪些可选配置项，配置项的描述，以及配置项是对应那个Java类的哪个属性
 
 通用Mapper的配置主要集中在`tk.mybatis.mapper.entity.Config`类中，注释很详细。
 
