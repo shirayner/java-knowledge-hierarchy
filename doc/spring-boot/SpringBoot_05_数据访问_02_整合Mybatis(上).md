@@ -180,6 +180,7 @@ import java.util.Map;
  *
  * @author shira 2019/05/09 21:27
  */
+@Mapper
 public interface UserMapper {
 
 	/**
@@ -365,3 +366,4 @@ public class UserMapperTest {
 2. [Spring Boot 揭秘与实战（二） 数据存储篇 - MyBatis整合](http://blog.720ui.com/2016/springboot_02_data_mybatis/)
 3. [一起来学SpringBoot | 第七篇：整合Mybatis](https://blog.battcn.com/2018/05/09/springboot/v2-orm-mybatis/)
 4. 
+
