@@ -413,7 +413,7 @@ public class UserRepositoryTest {
 
 # 二、JPA相关知识
 
-未完待续：参见 JPA分类
+参见 JPA分类（未完待续）
 
 
 
