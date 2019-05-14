@@ -4,19 +4,6 @@
 
 # 前言
 
-Spring官方说法：
-
-> [Caffeine](https://github.com/ben-manes/caffeine) is a Java 8 rewrite of Guava’s cache that supersedes support for Guava.
-
-
-
-关于 caffeine 的介绍可参见：
-
-> - [是什么让spring 5放弃了使用Guava Cache？](https://www.cnblogs.com/mawang/p/6756192.html)
-> - [Caffeine-比Guava Cache更好的缓存](http://fengfu.io/2018/03/26/Caffeine-%E6%AF%94Guava-Cache%E6%9B%B4%E5%A5%BD%E7%9A%84%E7%BC%93%E5%AD%98/)
-> - [Caffeine Cache 进程缓存之王](https://www.itcodemonkey.com/article/9498.html)
-> - [spring-boot-features-caching](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-caching.html#boot-features-caching-provider-caffeine)
-
 
 
 在  [SpringBoot_07_Cache_01_快速入门](./SpringBoot_07_Cache_01_快速入门.md)  这一节中，我们了解了 Spring 声明式缓存抽象，知道了：
@@ -26,18 +13,18 @@ Spring官方说法：
 
 
 
-那么，这一节我们将采用 `caffeine`作为缓存技术，来实现一个Spring声明式缓存的实例，这显然就很简单了，步骤如下：
+那么，这一节我们将采用 `redis`作为缓存技术，来实现一个Spring声明式缓存的实例，这显然就很简单了，一共两步：
 
-> - 引入 `caffeine` 依赖
+> - 引入 `redis`依赖
 > - 开启缓存支持
-> - 配置 caffeine
+> - 配置 redis
 > - 使用声明式缓存
 
 其他步骤同上一步： [SpringBoot_07_Cache_01_快速入门](./SpringBoot_07_Cache_01_快速入门.md) 
 
 
 
-# 一、SpringBoot 整合 caffeine
+# 一、SpringBoot 缓存整合 redis
 
 ## 1.创建子模块
 
@@ -45,7 +32,7 @@ Spring官方说法：
 
 ```properties
 group = 'com.ray.study'
-artifact ='spring-boot-07-cache-caffeine'
+artifact ='spring-boot-07-cache-redis'
 ```
 
 
@@ -70,11 +57,12 @@ include 'spring-boot-06-nosql-mongodb'
 include 'spring-boot-07-cache-concurrentmap'
 include 'spring-boot-07-cache-ehcache'
 include 'spring-boot-07-cache-caffeine'
+include 'spring-boot-07-cache-redis'
 ```
 
 
 
-这样，子工程`spring-boot-07-cache-caffeine`就会自动继承父工程中`subprojects` `函数里声明的依赖，主要包含如下依赖：
+这样，子工程`spring-boot-07-cache-redis`就会自动继承父工程中`subprojects` `函数里声明的依赖，主要包含如下依赖：
 
 ```groovy
 		implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -86,21 +74,25 @@ include 'spring-boot-07-cache-caffeine'
 
 
 
-### 2.2 引入`ehcache` `依赖
+### 2.2 引入`redis`依赖
 
-将子模块`spring-boot-07-cache-caffeine` 的`build.gradle`修改为如下内容：
+将子模块`spring-boot-07-cache-redis` 的`build.gradle`修改为如下内容：
 
 ```groovy
 dependencies {
-    // spring-boot-starter-cache  和 caffeine
+    // spring-boot-starter-cache
     implementation 'org.springframework.boot:spring-boot-starter-cache'
-    implementation 'com.github.ben-manes.caffeine:caffeine'
+
+    // redis 依赖 和 common pool2 ，要使用redis连接池就需要引入此common pool2
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.apache.commons:commons-pool2'
+
 
     // mysql 驱动和 jpa
     implementation 'mysql:mysql-connector-java'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-}
 
+}
 ```
 
 
@@ -108,6 +100,8 @@ dependencies {
 ## 3.修改配置
 
 ### 3.1 修改`application.yml`
+
+关于 redis cache 的可以使用默认配置：
 
 ```yml
 server:
@@ -126,28 +120,8 @@ spring:
     show-sql: true        # 打印sql语句
     hibernate:
       ddl-auto: update    # 加载 Hibernate时， 自动更新数据库结构
-  cache:                # 配置缓存
-    type: caffeine
-    cache-names: user,role
-    caffeine:
-      spec: maximumSize=300,expireAfterWrite=2m
 
 ```
-
-
-
-caffeine 配置说明：
-
-> - initialCapacity=[integer]: 初始的缓存空间大小
-> - maximumSize=[long]: 缓存的最大条数
-> - maximumWeight=[long]: 缓存的最大权重
-> - expireAfterAccess=[duration]: 最后一次写入或访问后经过固定时间过期
-> - expireAfterWrite=[duration]: 最后一次写入后经过固定时间过期
-> - refreshAfterWrite=[duration]: 创建缓存或者最近一次更新缓存后经过固定的时间间隔，刷新缓存
-> - weakKeys: 打开key的弱引用
-> - weakValues：打开value的弱引用
-> - softValues：打开value的软引用
-> - recordStats：开发统计功能
 
 
 
@@ -204,10 +178,39 @@ public class CacheConfiguration {
 
 其他部分（数据库准备、业务实现、单元测试）参加： [SpringBoot_07_Cache_01_快速入门](./SpringBoot_07_Cache_01_快速入门.md) 
 
+不过请注意**要缓存的JavaBean必须实现Serializable接口，因为Spring会将对象先序列化再存入 Redis**，因此
+
+```java
+@Getter
+@Setter
+@NoArgsConstructor
+@MappedSuperclass 
+public class BaseDO implements Serializable {   // BaseDO需要实现Serializable接口，否则会抛无法序列化的异常
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@JsonIgnore
+	private Date creationDate;
+
+	@JsonIgnore
+	private Date lastUpdateDate;
+}
+
+
+```
+
+
+
+
+
+
+
 
 
 # 参考资料
 
-1. [重剑无锋,大巧不工SpringBoot---推荐使用CaffeineCache](http://blog.joylau.cn/2017/09/19/SpringBoot-CaffeineCache/)
-2.  [Spring Boot缓存实战 Caffeine](https://www.jianshu.com/p/c72fb0c787fc)
+1. [springboot 2 集成 redis 缓存](https://juejin.im/entry/5b433c3de51d45191716e01c)
+2. [Spring Boot缓存实战 Caffeine](https://www.jianshu.com/p/c72fb0c787fc)
 
