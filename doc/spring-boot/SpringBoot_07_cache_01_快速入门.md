@@ -21,14 +21,14 @@ Spring 框架提供一种抽象的缓存机制，定义了 `org.springframework.
 
 ## 1.Spring支持的CacheManager
 
-针对不同的缓存技术，需要实现不同的 `CacheManager`，Spring 定义了如下的 `CacheManager`实现
+针对不同的缓存技术，需要实现不同的 `CacheManager`，Spring5.x 定义了如下的 `CacheManager`实现
 
 | CacheManager              | 描述                                                         |
 | ------------------------- | ------------------------------------------------------------ |
 | SimpleCacheManager        | 使用简单的 Collection 来存储缓存，主要用来测试用途           |
 | ConcurrentMapCacheManager | 使用 ConcurrentMap 来存储缓存，是默认的 CacheManager         |
 | EhCacheCacheManager       | 使用 EhCache 作为缓存技术                                    |
-| GuavaCacheManager         | 使用`Google Guava`的`GuavaCache`作为缓存技术                 |
+| CaffeineCacheManager      | 使用`caffeine`作为缓存技术（Guava Cache被替换）              |
 | HazelcastCacheManager     | 使用 Hazelcast 作为缓存技术                                  |
 | JCacheCacheManager        | 支持 `JCache` (JSR-107) 标准的实现作为缓存技术，如 `Apache Commons JCS` |
 | RedisCacheManager         | 使用 Redis 作为缓存技术                                      |
@@ -43,6 +43,8 @@ public EhCacheCacheManager cacheManager(CacheManager ehCacheCacheManager) {
     return new EhCacheCacheManager(ehCacheCacheManager); 
 } 
 ```
+
+
 
 
 
