@@ -491,7 +491,7 @@ public class CacheConfiguration {
 
 
 
-### 5.1 UserRepository
+### 5.2 UserRepository
 
 ```java
 package com.ray.study.springboot07concurrentmap.repository;
@@ -552,7 +552,7 @@ public interface UserRepository extends JpaRepository<User, Long>  {
 
 
 
-## 6.service
+### 5.3.service
 
 - UserService
 
@@ -645,7 +645,7 @@ public interface UserRepository extends JpaRepository<User, Long>  {
 
 
 
-## 7.单元测试
+## 6.单元测试
 
 - UserServiceTest
 
