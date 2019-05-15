@@ -5,7 +5,6 @@
 # 官方资料
 
 1. [RabbitMQ Tutorials](http://www.rabbitmq.com/getstarted.html)
-2. 
 
 
 
@@ -13,7 +12,15 @@
 
 # 精选资料
 
-1. 
+1. RabbitMQ Tutorials 梁桂钊译文
+
+    > - [【译】RabbitMQ 实战教程（一） Hello World!](http://blog.720ui.com/2017/rabbitmq_action_01_helloworld/)
+    > - [【译】RabbitMQ 实战教程（二） 工作队列](http://blog.720ui.com/2017/rabbitmq_action_02_workqueues/)
+    > - [【译】RabbitMQ 实战教程（三） 发布/订阅](http://blog.720ui.com/2017/rabbitmq_action_03_publish_subscribe/)
+    > - [【译】RabbitMQ 实战教程（四） 路由](http://blog.720ui.com/2017/rabbitmq_action_04_routing/)
+    > - [【译】RabbitMQ 实战教程（五） 主题](http://blog.720ui.com/2017/rabbitmq_action_05_topics/)
+
+
 
 
 

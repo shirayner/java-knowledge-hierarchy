@@ -52,11 +52,17 @@ MQ全称（Message Queue）又名消息队列，是一种异步通讯的中间�
 
 
 
+# 二、准备RabbitMQ
+
+**准备条件**：在SpringBoot整合RabbitMq之前需要确保已经正确安装和运行RabbitMQ，可参见 [RabbitMQ_01_安裝及配置](https://blog.csdn.net/qq_26981333/article/details/90238384)
 
 
-# 二、SpringBoot 整合 RabbitMQ
 
-**准备条件**：在这之前需要安装和运行RabbitMq，可参见 [RabbitMQ_01_安裝及配置](../RabbitMQ/RabbitMQ_01_安裝及配置.md)
+
+
+
+
+# 三、SpringBoot 整合 RabbitMQ
 
 
 
