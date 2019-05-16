@@ -15,6 +15,10 @@
 
 这部分有源码：源码地址：
 
+> https://github.com/shirayner/spring-boot-seeds/tree/master/spring-boot-10-config-readconfigproperty
+
+
+
 ## 1.Environment
 
 关于Spring Environment 抽象，可参考：
