@@ -185,7 +185,8 @@ csdn:
 
 - BlogProperties
 
-    > 属性映射规则： 配置文件中配置属性的"-"和"_"会被去掉并转成驼峰形式
+    > - 属性映射规则： 配置文件中配置属性的"-"和"_"会被去掉并转成驼峰形式
+    > - 被映射属性需要提供getter/setter，而@Value却不需要
 
 ```java
 package com.ray.study.springboot10configreadconfigproperty.config;
@@ -199,8 +200,10 @@ import java.util.List;
 
 /**
  * 配置属性类
- *  属性映射规则： 配置文件中配置属性的"-"和"_"会被去掉并转成驼峰形式
+ *  （1）属性映射规则： 配置文件中配置属性的"-"和"_"会被去掉并转成驼峰形式
  *   也就是说配置文件中的 homePage 可以写成： home-page/home_page/homePage
+ *
+ *	（2）被映射属性需要提供getter/setter，而@Value却不需要
  *
  * @author shira 2019/05/16 21:18
  */
