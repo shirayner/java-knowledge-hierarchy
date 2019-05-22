@@ -428,7 +428,43 @@ public class SpringCloud01Discovery01EurekaClientApplication {
 
 
 
-## 4.效果演示
+## 4.业务实现
+
+这里我们写一个简单的controller，获取一下可用的服务列表
+
+```java
+package com.ray.study.springcloud01discovery01eurekaclient.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+/**
+ * description
+ *
+ * @author shira 2019/05/20 19:57
+ */
+@RestController
+public class HelloController {
+
+	@Autowired
+	private DiscoveryClient discoveryClient;
+
+	@GetMapping("/")
+	public List<String>  listServices(){
+		List<String> services = discoveryClient.getServices();
+		return services;
+	}
+}
+
+```
+
+
+
+## 5.效果演示
 
 按照 SpringBoot 工程启动方式启动本工程，然后访问 eureka-server 的图形化界面：
 
@@ -440,11 +476,11 @@ public class SpringCloud01Discovery01EurekaClientApplication {
 
 
 
+访问  HelloController （需要注意的是，需要等一段时间才会显示下图的服务列表，因为eureka客户端是定时从服务注册中心拉取服务列表的，因此需要等上这段时间，可通过配置参数来减少此时间）：
 
+> http://localhost:8762/
 
-
-
-
+![1558495104857](images/1558495104857.png)
 
 
 
