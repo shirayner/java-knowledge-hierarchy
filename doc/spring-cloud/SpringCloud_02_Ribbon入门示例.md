@@ -128,13 +128,13 @@ spring:
     name: consumer-ribbon   #指定服务名
 
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     registerWithEureka: true   #服务注册开关
     fetchRegistry: true        #服务发现开关
     serviceUrl:   #Eureka客户端与Eureka服务端进行交互的地址，多个中间用逗号分隔
       defaultZone: http://localhost:8761/eureka/    # 指定 Eureka Server 地址
-
-
 
 ```
 
