@@ -82,7 +82,7 @@ include 'spring-cloud-02-consumer-ribbon'
 
 
 
-这样，子工程`spring-cloud-01-discovery-02-consul-client`就会自动继承父工程中`subprojects` 函数里声明的项目信息
+这样，子工程`spring-cloud-02-consumer-ribbon`就会自动继承父工程中`subprojects` 函数里声明的项目信息
 
 
 
