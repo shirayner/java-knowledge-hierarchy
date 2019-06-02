@@ -8,7 +8,7 @@
 
 前言部分请参考：[防雪崩利器：熔断器 Hystrix 的原理与使用](https://segmentfault.com/a/1190000005988895)
 
-
+前言部分未完待续
 
 ## 1.雪崩效应
 
@@ -207,7 +207,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 
 @EnableFeignClients
-@EnableEurekaClient
+@EnableDiscoveryClient
 @SpringBootApplication
 public class SpringCloud03ConsumerFeignApplication {
 
@@ -430,6 +430,10 @@ public class UserController {
 
 
 ## 5.测试
+
+> 下面，我们将使用  [SpringCloud_01_Discovery_01_Eureka入门示例.md](./SpringCloud_01_Discovery_01_Eureka入门示例.md)  这一节中创建的 Eureka 注册中心和Eureka Client 服务提供者来进行演示
+
+
 
 依次启动  
 

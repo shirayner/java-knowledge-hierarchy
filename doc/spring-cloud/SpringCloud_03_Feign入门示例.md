@@ -309,6 +309,10 @@ public class UserController {
 
 ## 5.测试
 
+> 下面，我们将使用  [SpringCloud_01_Discovery_01_Eureka入门示例.md](./SpringCloud_01_Discovery_01_Eureka入门示例.md)  这一节中创建的 Eureka 注册中心和Eureka Client 服务提供者来进行演示
+
+
+
 依次启动  
 
 > - eurka-server： 服务注册中心
