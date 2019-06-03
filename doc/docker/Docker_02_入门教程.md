@@ -436,7 +436,7 @@ RUN echo 'Hi, I am in your container' \
 EXPOSE 80
 ```
 
-该Dockerfile由一系列指令和参数组成。每条指令，如FROM，都必须为大写字母，且后面要跟随一个参数，Dockerfile中的指令会按顺序从上到下执行，每条指令都会创建一个新的镜像层并对镜像进行提交。Docker大体上按照如下流程执行Dockerfile中的指令：
+该Dockerfile由一系列指令和参数组成。每条指令，如FROM，都必须为大写字母，且后面要跟随一个参数，**Dockerfile中的指令会按顺序从上到下执行，每条指令都会创建一个新的镜像层并对镜像进行提交**。Docker大体上按照如下流程执行Dockerfile中的指令：
 
 > - Docker从基础镜像运行一个容器。
 > - 执行一条指令，对容器做出修改。
