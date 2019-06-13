@@ -75,7 +75,7 @@ git push origin myBranch      #提交至远程仓库
 使用如下命令，拉取远程 master 分支代码，并合并到本地当前分支上，这样就保证本地与远程`master`代码同步
 
 ```bash
-git push origin master
+git pull origin master
 ```
 
 
