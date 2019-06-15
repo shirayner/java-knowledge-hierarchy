@@ -135,5 +135,105 @@ IDEA默认有很多地方的代码都会自动折叠，如果不习惯，可以�
 ## 11.设置多Tab页
 ![在这里插入图片描述](https://img-blog.csdn.net/20181008154042348?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI2OTgxMzMz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
+
+
+
+
+
+
+# 四、开发规约配置
+
+## 1.代码格式化
+
+1、安装`Eclipse Code Formatter`格式化插件
+
+![image](images/check008.png)
+
+2、设置格式化配置文件
+
+GoogleStyle：[eclipse-java-google-style.xml](http://hzerodoc.saas.hand-china.com/files/docs/development-specification/backend-development-specification/basic/eclipse-java-google-style.xml)
+
+![img ](images/check009.png)
+
+3、使用快捷键`Ctrl+Alt+L`格式化代码
+
+![img ](images/check0010.png)
+
+
+
+
+
+
+
+## 2.换行设置
+
+统一120个字符换行（默认就是120）
+
+![image](images/check006.png)
+
+
+
+
+
+## 3.tab设置
+
+统一使用默认的`4`个空格为一个Tab
+
+![image](images/check007.png)
+
+
+
+
+
+## 4.开启阿里巴巴规范检查
+
+1、 安装插件`Alibaba Java Coding Guidelines`
+
+![img](images/check001.png)
+
+2、使用插件分析代码
+
+![img](images/check002.png)
+3、工具类绿色按钮扫描代码，蓝色按钮开启/关闭实时检测
+
+![img](images/check003.png)
+4、扫描之后可以看到对应的分析结果以及对应的说明
+
+![img](images/check004.png)
+
+
+
+
+
+## 5.IntelliJ IDEA 注释模板
+
+IntelliJ IDEA 只能通过设置注释模板来实现，请先导入[IDEA注释模板](http://hzerodoc.saas.hand-china.com/files/docs/development-specification/backend-development-specification/basic/comment/FileTemplate.jar)。*File -> Import Settings*
+
+该模板内置了几种常用注释：
+
+- 创建类时默认生成标准的Javadoc注释
+- 使用 `cc + Enter` 生成类注释
+- 使用 `mc + Enter` 生成方法注释，这个需要在方法内部生成，然后剪贴到方法上。
+- 使用 `hc + Enter` / `dc + Enter` 生成区块注释
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # 三、参考资料
+
 1. [Android Studio 入门级教程（一）](http://www.cnblogs.com/abao0/p/6934023.html)
