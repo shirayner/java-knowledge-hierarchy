@@ -31,21 +31,18 @@
 version: "3"
 services:
   redis:
-    image: redis 
+    image: redis:4.0.11
     ports:
       - 6379:6379 
     restart: always
-    command: redis-server --requirepass ${pwd} --notify-keyspace-events Eglx
-    volumes:
-      - ${REDIS_DIR}/conf:/usr/local/etc/redis
-      - ${REDIS_DIR}/data:/data
+    command: redis-server  --notify-keyspace-events Eglx
     networks:
       - baseNetwork
 
   mysql:
     image: mysql:8.0.16
     ports:
-      - "3306:3306"
+      - 3306:3306
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -59,7 +56,6 @@ services:
 networks:
   baseNetwork:
     driver: bridge
-
 ```
 
 
@@ -69,6 +65,8 @@ networks:
 ## 2.配置文件
 
 ### 2.1 .env
+
+docker-compose.yml 同级目录下
 
 ```properties
 # .env文件内容
@@ -99,8 +97,7 @@ MYSQL_ROOT_PASSWORD=root
 ```properties
 # mysql_db.cnf
 [mysqld]
-lower_case_table_names=1
-character_set_server=utf8
+character_set_server=UTF8MB4
 max_connections=500
 ```
 
