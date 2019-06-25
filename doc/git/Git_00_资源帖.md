@@ -21,6 +21,8 @@
 > - [Github 的清点对象算法](http://www.ruanyifeng.com/blog/2015/09/git-bitmap.html)
 > - [常用 Git 命令清单](http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html)
 > - [Git 工作流程](http://www.ruanyifeng.com/blog/2015/12/git-workflow.html)
+> - [Git 原理入门](http://www.ruanyifeng.com/blog/2018/10/git-internals.html)
+> - [git bisect 命令教程](http://www.ruanyifeng.com/blog/2018/12/git-bisect.html)
 
  
 
