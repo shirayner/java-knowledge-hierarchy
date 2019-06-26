@@ -335,9 +335,163 @@ flush privileges;
 添加一个允许远程连接的帐户
 
 ```mysql
-mysql> grant all  on *.* to ray@'%'；
+mysql> grant all  on *.* to ray@'%';
 mysql> flush privileges;
 ```
+
+
+
+# 二、Window 安装Mysql
+
+## 1.下载Mysql
+
+前往[Mysql 官网](https://dev.mysql.com/downloads/mysql/)下载
+
+![1561531700013](images/1561531700013.png)
+
+
+
+下载之后解压即可
+
+![1561532568833](images/1561532568833.png)
+
+
+
+## 2. 配置
+
+### 2.1 配置环境变量
+
+```properties
+MYSQL_HOME=C:\dev-env\Mysql\mysql-8.0.16-winx64
+Path=%MYSQL_HOME%\bin
+```
+
+
+
+### 2.2 my.ini 配置文件
+
+创建`%MYSQL_HOME%\my.ini`文件，内容如下：
+
+```properties
+[mysqld]
+# 设置3306端口
+port=3306
+# 设置mysql的安装目录
+basedir=C:\dev-env\Mysql\mysql-8.0.16-winx64
+# 设置mysql数据库的数据的存放目录
+datadir=C:\dev-env\Mysql\mysql-8.0.16-winx64\data
+# 允许最大连接数
+max_connections=200
+# 允许连接失败的次数。这是为了防止有人从该主机试图攻击数据库系统
+max_connect_errors=10
+# 服务端使用的字符集默认为UTF8
+character-set-server=UTF8MB4
+# 创建新表时将使用的默认存储引擎
+default-storage-engine=INNODB
+# 默认使用“mysql_native_password”插件认证
+default_authentication_plugin=mysql_native_password
+
+[mysql]
+# 设置mysql客户端默认字符集
+default-character-set=UTF8MB4
+
+[client]
+# 设置mysql客户端连接服务端时默认使用的端口
+port=3306
+default-character-set=UTF8MB4
+```
+
+
+
+## 3.MySQL服务安装及初始化
+
+### 3.1 安装Mysql服务
+
+以管理员权限运行cmd，执行如下命令
+
+```bash
+mysqld install
+```
+
+
+
+> mysqld --install [服务名]
+>
+> 后面的服务名可以不写，默认的名字为 mysql。当然，如果你的电脑上需要安装多个MySQL服务，就可以用不同的名字区分了，比如 mysql5 和 mysql8。
+
+
+
+![1561533071238](images/1561533071238.png)
+
+
+
+### 3.2 Mysql初始化
+
+然后执行如下命令进行Mysql数据库的初始化
+
+```bash
+mysqld --initialize --console
+```
+
+然后Mysql会在控制台上打印一条root用户的临时密码：` VmokREa8Bl+q`
+
+![1561533601909](images/1561533601909.png)
+
+
+
+> 需要记住此处的临时密码，后面会用到。若忘记了此临时密码，则删除 data文件夹，重新执行`mysqld --initialize --console`来重新初始化Mysql数据库即可。
+
+
+
+
+
+## 4.mysql的启停
+
+```bash
+# 启动mysql
+net start mysql
+
+# 停止mysql
+net stop mysql
+```
+
+
+
+## 5.远程连接设置
+
+数据库初始化时创建的 root 账户（root@localhost）只允许在本地登录，如果要在其它机器上连接mysql，必须**添加一个允许远程连接的帐户**。
+
+### 5.1 修改Root用户
+
+修改root用户密码，并允许root用户远程登录
+
+```bash
+mysql> ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';
+mysql> ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'root';
+```
+
+
+
+### 5.2 创建用户
+
+```bash
+mysql> CREATE USER 'ray'@'%' IDENTIFIED WITH mysql_native_password BY 'ray';
+```
+
+
+
+### 5.3 授权用户
+
+添加一个允许远程连接的帐户
+
+```mysql
+mysql> grant all  on *.* to ray@'%';
+mysql> flush privileges;
+```
+
+
+
+# 
 
 
 
@@ -347,6 +501,8 @@ mysql> flush privileges;
 
 # 参考资料
 
+## 1.Linux安装Mysql
+
 1. [CentOS7 yum 安装与配置MySQL5.7](https://www.cnblogs.com/ianduin/p/7679239.html)
 2. [Installing MySQL on Linux Using the MySQL Yum Repository](https://dev.mysql.com/doc/refman/8.0/en/linux-installation-yum-repo.html)
 3. [MySQL Documentation：Installing MySQL on Linux Using the MySQL Yum Repository](https://dev.mysql.com/doc/refman/8.0/en/linux-installation-yum-repo.html)
@@ -354,4 +510,8 @@ mysql> flush privileges;
 5. [[centos7 mysql数据库安装和配置](https://www.cnblogs.com/starof/p/4680083.html)](https://www.cnblogs.com/starof/p/4680083.html)
 
 
+
+## 2.Window 安装Mysql
+
+1. [Win10安装mysql-8.0.11-winx64详细步骤](https://blog.csdn.net/qq_20788055/article/details/80372577)
 

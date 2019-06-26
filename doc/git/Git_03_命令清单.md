@@ -461,22 +461,11 @@ $ git pull origin next
 
 
 
-## 3.
-
-
-
-
-
-
+## 3.推送代码到远程
 
 
 
 > ```bash
-> 
-> 
-> # 取回远程仓库的变化，并与本地分支合并
-> $ git pull [remote] [branch]
-> 
 > # 上传本地指定分支到远程仓库
 > $ git push [remote] [branch]
 > 
