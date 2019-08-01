@@ -21,7 +21,7 @@
 
 
 
-`InstantClient` 下载完解压即可（解压目录后程序所在主目录为Home目录），`PL/SQL Developer`需要安装，默认安装即可
+`InstantClient` 下载完解压即可（解压目录后程序所在主目录为Home目录），`PL/SQL Developer`需要安装，默认安装即可（若使用的是PL/SQL Developer绿色版，则解压即可，不用配环境变量）
 
 
 
@@ -44,7 +44,7 @@
  依次点击 Configure ->  Preferences -> Oracle -> Connection，然后设置
 
 ```properties
-Oracle Home = InstantClient Home 目录
+Oracle Home = InstantClient Home 目录（路径中不能有中文）
 OCI libraray = InstantClient Home 目录\oci.dll
 ```
 

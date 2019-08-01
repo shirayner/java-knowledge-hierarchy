@@ -174,6 +174,20 @@ s C
 
 
 
+
+
+合并当前分支上两次提交信息
+
+```bash
+git rebase -i HEAD~2
+```
+
+
+
+
+
+
+
 ### 2.3 git pull
 
 > - git pull =  git fetch + git merge
