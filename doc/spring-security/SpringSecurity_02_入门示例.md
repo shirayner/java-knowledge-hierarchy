@@ -18,6 +18,15 @@
 
 ## 2.常用权限拦截器
 
+```
+FilterChainProxy
+DelegatingFilterProxy
+```
+
+
+
+
+
 >- SecurityContextPersistenceFilter
 >- 
 >

@@ -888,6 +888,10 @@ INSERT INTO `role` VALUES (2, 'ROLE_USER');
 1. [SpringBoot2.x整合Security5（完美解决 There is no PasswordEncoder mapped for the id "null"）](https://blog.csdn.net/SWPU_Lipan/article/details/80586054)
 2. [springboot2.0--结合spring security5.0进行权限控制，从数据库中取权限信息及增加验证码](https://blog.csdn.net/fycghy0803/article/details/80535287)
 3. [springboot2.1.4 与security5用户认证学习笔记](https://blog.51cto.com/357712148/2388932)
+4. [SpringBoot + Spring Security 学习笔记（四）记住我功能实现](https://www.cnblogs.com/mujingyu/p/10702324.html)
+5. [Spring Security 实现记住我](https://www.cnblogs.com/jonban/p/rememberMe.html)
+6. [精通Spring Boot—— 第二十篇：Spring Security记住我功能](https://msd.misuland.com/pd/2884250034537237580)
+7. 
 
 
 
