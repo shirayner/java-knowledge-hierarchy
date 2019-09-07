@@ -57,11 +57,65 @@ maven内置的`complier`插件默认编译版本为1.5，若想支持其他的�
 
 
 
+## 3.maven-source-plugin
+
+```xml
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+```
+
+
+
+
+
+
+
 
 
 
 
 # 三、其他
+
+## 1.`<resources>`
+
+```xml
+<build>
+    <!-- 解决target/classes下没有 src/main/resources下的资源文件 -->
+    <resources>
+      <resource>
+        <directory>src/main/java</directory>
+        <includes>
+          <include>**/*.*</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*.*</include>
+        </includes>
+      </resource>
+    </resources>
+</build>
+```
+
+
+
+
+
+
+
+
 
 ## 1.`tomcat7-maven-plugin`
 
