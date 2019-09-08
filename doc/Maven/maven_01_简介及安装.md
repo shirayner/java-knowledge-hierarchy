@@ -14,9 +14,11 @@ Maven主要服务于基于Java平台的**项目构建**、**依赖管理**和**�
 
 
 
-# 二、安装
+# 二、安装Maven
 
-## 1.检查JDK安装
+## 1.Windows下安装Maven
+
+### 1.1 检查JDK安装
 
 执行如下命令，检查JDK的安装情况
 
@@ -26,7 +28,7 @@ Maven主要服务于基于Java平台的**项目构建**、**依赖管理**和**�
 
 
 
-## 2.maven安装
+### 1.2 maven安装
 
 （1）去官网下载maven，解压，
 
@@ -42,6 +44,51 @@ PATH=%M2_HOME%\bin
 > echo  %M2_HOME%
 >
 > mvn -v
+
+
+
+
+
+## 2.Linux下安装Maven
+
+### 2.1 下载
+
+前往[官网](http://maven.apache.org/download.cgi)下载`.tar.gz`格式的压缩包
+
+### 2.2 解压
+
+```bash
+# 创建安装目录
+sudo mkdir /usr/local/maven/
+
+# 解压至安装目录
+sudo tar -zxvf apache-maven-3.6.2-bin.tar.gz -C /usr/local/maven/
+```
+
+
+
+### 2.3 设置环境变量
+
+编辑文件`/etc/profile`
+
+```bash
+sudo vim /etc/profile
+```
+
+添加文件末尾追加 JDK环境变量
+
+```properties
+export MAVEN_HOME=/usr/local/maven/apache-maven-3.6.2
+export PATH=$MAVEN_HOME/bin:$PATH
+```
+
+使环境变量生效
+
+```
+source /etc/profile
+```
+
+
 
 
 
