@@ -112,6 +112,70 @@ env WINEPREFIX=~/.deepinwine/Deepin-WeChat deepin-wine WeChatSetup.exe
 
 
 
+## 4.sublime
+
+### 4.1 安装
+
+> 参见： [官方文档](http://www.sublimetext.com/docs/3/linux_repositories.html)
+
+
+
+（1）安装 GPG key
+
+```bash
+wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+```
+
+确保apt设置为使用https源
+
+```bash
+sudo apt-get install apt-transport-https
+```
+
+
+
+（2）添加软件源
+
+方式一：
+
+```
+# 创建 typora 软件源文件
+sudo vim /etc/apt/sources.list.d/sublime-text.list
+# 文件内键入以下内容，保存退出即可
+deb https://download.sublimetext.com/ apt/stable/
+```
+
+
+
+方式二：
+
+```bash
+echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+```
+
+
+
+
+
+
+
+(3)添加完软件源之后，就可以更新缓存再去安装 sublime-text
+
+```
+sudo apt-get update
+sudo apt-get install sublime-text
+```
+
+
+
+### 4.2 激活
+
+参见：[Sublime text3 Version 3.2.1 3207 激活码许可证(2019-05-11亲测有效)](https://blog.csdn.net/x550392236/article/details/89712736)
+
+
+
+
+
 
 
 # 二、通过 wine 安装
@@ -190,6 +254,46 @@ wine  xxx.exe
 ```
 
 不过第一次执行时，会下载`wine Mono`和`wine_`
+
+
+
+
+
+
+
+# 三、通过PlayOnLinux安装
+
+## 1.更新PlayOnLinux
+
+> 参考：
+>
+> - [如何更新PlayOnLinux？](http://www.kbase101.com/question/7372.html)
+> - http://www.playonlinux.com/en/download.html
+
+
+
+
+
+方式一：下载deb包安装
+
+
+
+![1568084132585](images/1568084132585.png)
+
+
+
+
+
+方式二：通过软件源安装
+
+```bash
+sudo wget -q "http://deb.playonlinux.com/public.gpg" -O- | apt-key add -
+sudo wget http://deb.playonlinux.com/playonlinux_stretch.list -O /etc/apt/sources.list.d/playonlinux.list
+sudo apt-get update
+sudo apt-get install playonlinux
+```
+
+
 
 
 

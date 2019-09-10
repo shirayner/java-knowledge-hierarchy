@@ -62,7 +62,7 @@ export PATH=$MAVEN_HOME/bin:$CATALINA_HOME/bin:$JAVA_HOME/bin:$PATH
 
 ## 5.Mysql 安装
 
-
+参见：[Mysql_01_安装及配置](../../Mysql/Mysql_01_安装及配置.md)
 
 
 
@@ -72,9 +72,35 @@ export PATH=$MAVEN_HOME/bin:$CATALINA_HOME/bin:$JAVA_HOME/bin:$PATH
 
 
 
-
-
 ## 7.Redis 安装
 
 参见：[Redis_01_Redis单机环境搭建](../../Redis/Redis_01_Redis单机环境搭建.md)
+
+
+
+## 8.Gradle安装
+
+参见：[Gradle_01_安装及配置](../../Gradle/Gradle_01_安装及配置)
+
+
+
+## 9.Docker
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

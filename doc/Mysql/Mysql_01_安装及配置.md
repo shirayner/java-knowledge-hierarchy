@@ -12,9 +12,9 @@
 
 
 
-# 一、LInux安装Mysql
+# 一、Linux安装Mysql
 
-## 1.使用yum安装
+## 1.RedHat下安装Mysql
 
 我们将在 Centos7 系统下使用 yum 命令安装 MySQL
 
@@ -215,7 +215,116 @@ mysql> set password for 'root'@'localhost' =password('root');
 
 
 
+## 2.Debian下安装Mysql
 
+> 参考： 
+>
+> - [Debian9安装MySQL](https://www.jianshu.com/p/40b770d86a7b)
+> - [Mariadb修改root密码](https://www.cnblogs.com/keithtt/p/6922378.html)
+
+
+
+### 2.1 安装
+
+
+
+#### 2.1.1 添加软件源
+
+（1）前往官网下载页面，下载 APT 源
+
+
+
+![1568010832112](images/1568010832112.png)
+
+
+
+
+
+![1568010732362](images/1568010732362.png)
+
+
+
+使用dpkg指令添加该文件进apt-get的源
+
+```bash
+sudo dpkg -i mysql-apt-config_0.8.13-1_all.deb
+```
+
+
+
+然后会弹出一个mysql的源的配置界面，安装自己需要的版本，然后ok即可
+
+
+
+接着更新缓存
+
+```bash
+sudo apt-get update
+```
+
+
+
+
+
+
+
+#### 2.1.2 安装
+
+```bash
+sudo apt-get install mysql-server
+```
+
+
+
+#### 2.1.3 修改Root用户
+
+（1）root用户登录mysql
+
+初始密码为空
+
+输入如下命令，密码直接回车，即可登录
+
+```bash
+# 注意需要加sudo
+sudo mysql -uroot -p
+```
+
+
+
+（2）修改 `'root'@'localhost'` 密码 
+
+```mysql
+-- 2.1 更新 mysql 库中 user 表的字段：
+MariaDB [(none)]> use mysql;  
+MariaDB [mysql]> UPDATE user SET password=password('newpassword') WHERE user='root';  
+MariaDB [mysql]> flush privileges;  
+MariaDB [mysql]> exit;
+```
+
+
+
+（3）创建 `'root'@'%'` 用户 
+
+```mysql
+MariaDB [(none)]> use mysql;  
+MariaDB [mysql]> UPDATE user SET host='%' WHERE user='root';  
+```
+
+
+
+
+
+
+
+
+
+### 2.2 Mysql 常用操作
+
+```
+sudo service mysql start
+sudo service mysql stop
+sudo service mysql restart
+```
 
 
 
@@ -341,7 +450,13 @@ mysql> flush privileges;
 
 
 
-# 二、Window 安装Mysql
+
+
+
+
+
+
+# 三、Window 安装Mysql
 
 ## 1.下载Mysql
 
