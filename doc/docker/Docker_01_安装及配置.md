@@ -8,168 +8,213 @@
 
 
 
-# 一、Ubuntu 安装Docker CE 
 
-## 1.检查内核版本
 
-Docker目前只能运行在64位平台上，并且要求内核版本不低于3.10，实际上内核越新越好，过低的内核版本容易造成功能不稳定。
+# 一、Deepin下安装 Docker CE
 
-用户可以通过如下命令检查自己的内核版本详细信息：
-
-```
-uname -a
-```
+> 参考： 
+>
+> - [Get Docker Engine - Community for Debian](https://docs.docker.com/install/linux/docker-ce/debian/)
+> - [Deepin15.10安装Docker](https://www.jianshu.com/p/4c1aba15f7fe)
 
 
 
-## 2.卸载旧版本
+## 1.卸载旧版本
 
-旧版本的 Docker 称为 `docker` 或者 `docker-engine`，使用以下命令卸载旧版本：
-
-```
+```bash
 sudo apt-get remove docker docker-engine docker.io containerd runc
 ```
 
 
 
-## 3.设置使用的仓库
+## 2.更新软件源
 
-在新机器上初次安装Docker 前，需要先设置 Docker Repository ，然后你就可以从这个 Repository 中安装和更新 Dokcer了。
-
-（1）更新 apt 包索引
+（1）安装docker-ce与密钥管理及相关下载工具
 
 ```bash
-sudo apt-get update
+sudo apt-get install apt-transport-https ca-certificates curl gnupg2 software-properties-common
+```
+
+> 注意：主要包括curl命令、add-apt-reposiory工具（利用software-properties-common提供该工具）和密钥管理工具。
+
+
+
+（2）添加CPG密钥
+
+```bash
+curl -fsSL https://mirrors.ustc.edu.cn/docker-ce/linux/debian/gpg | sudo apt-key add -
+```
+
+使用上述命令，出现如下异常：
+
+```
+curl: (35) error:140770FC:SSL routines:SSL23_GET_SERVER_HELLO:unknown protocol
+gpg: no valid OpenPGP data found.
+```
+
+可将命令拆成两步执行
+
+```bash
+wget https://mirrors.ustc.edu.cn/docker-ce/linux/debian/gpg
+sudo apt-key add gpg
 ```
 
 
 
-（2）由于 `apt` 源使用 HTTPS 以确保软件下载过程中不被篡改。因此，我们首先需要添加使用 HTTPS 传输的软件包以及 CA 证书。
+查看密钥是否安装成功
 
-```bash
-sudo apt-get install \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    gnupg-agent \
-    software-properties-common
+```
+sudo apt-key fingerprint 0EBFCD88
 ```
 
+如果安装成功，显示如下信息：
 
-
-（3）为了确认所下载软件包的合法性，需要添加软件源的 `GPG` 密钥。
-
-```bash
-$ curl -fsSL https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/gpg | sudo apt-key add -
-
-
-# 官方源
-# $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 ```
-
-
-
-现在可以验证你是否有带有指纹的秘钥： `9DC8 5822 9FC7 DD38 854A E2D8 8D81 803C 0EBF CD88`，执行如下命令，根据秘钥的最后8位字符来查看秘钥
-
-```bash
-$ sudo apt-key fingerprint 0EBFCD88
-    
 pub   rsa4096 2017-02-22 [SCEA]
       9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88
-uid           [ unknown] Docker Release (CE deb) <docker@docker.com>
+uid   [ 未知 ] Docker Release (CE deb) <docker@docker.com>
 sub   rsa4096 2017-02-22 [S]
+
 ```
 
 
 
-（3）然后，我们需要向 `source.list` 中添加 Docker 软件源
+（3）添加 docker 软件源
 
 ```bash
-$ sudo add-apt-repository \
-    "deb [arch=amd64] https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu \
-    $(lsb_release -cs) \
-    stable"
+# 创建 typora 软件源文件
+sudo vim /etc/apt/sources.list.d/docker.list
 
-
-# 官方源
-# $ sudo add-apt-repository \
-#    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-#    $(lsb_release -cs) \
-#    stable"
+# 文件内键入以下内容，保存退出即可
+deb [arch=amd64] https://mirrors.ustc.edu.cn/docker-ce/linux/debian stretch stable
 ```
 
 
 
-> 以上命令会添加稳定版本的 Docker CE APT 镜像源，如果需要测试或每日构建版本的 Docker CE 请将 stable 改为 test 或者 nightly。
+其中：stretch为Debian版本号，这个和Ubuntu系统利用 $(lsb_release -cs)命令设置系统版本号不同，需要手动指定Debian版本号。
 
-
-
-## 4.安装 Docker CE
-
-（1）更新 apt 包索引
+查看Deepin系统中Debian版本号可以用查看：
 
 ```
+cat /etc/debian_version
+```
+
+根据查看的版本号替换对应的版本名称即可：
+
+```properties
+Debian 9（"stretch"） — 当前的稳定版
+Debian 8（"jessie"） — 被淘汰的稳定版
+Debian 7（"wheezy"） — 被淘汰的稳定版
+Debian 6.0（"squeeze"） — 被淘汰的稳定版
+Debian GNU/Linux 5.0（"lenny"） — 被淘汰的稳定版
+Debian GNU/Linux 4.0（"etch"） — 被淘汰的稳定版
+Debian GNU/Linux 3.1（"sarge"） — 被淘汰的稳定版
+Debian GNU/Linux 3.0（"woody"） — 被淘汰的稳定版
+Debian GNU/Linux 2.2（"potato"） — 被淘汰的稳定版
+Debian GNU/Linux 2.1（"slink"） — 被淘汰的稳定版
+Debian GNU/Linux 2.0（"hamm"） — 被淘汰的稳定版
+```
+
+Deepin15.11 对应的Debian版本号为9，版本代号为stretch，进行相应的替换即可。
+
+
+
+
+
+（4）更新缓存
+
+```bash
 sudo apt-get update
 ```
 
 
 
-（2）安装 Docker CE 和 containerd 最新版本
+## 3.安装docker-ce
 
+（1）安装docker-ce
+
+```bash
+sudo apt-get install docker-ce
 ```
-sudo apt-get install docker-ce docker-ce-cli containerd.io
+
+
+
+（2）修改 docker.service
+
+安装完成后，需要修改相应的文件：/lib/systemd/system/docker.service.
+把如下位置内容：
+
+```properties
+ExecStart=/usr/bin/dockerd -H fd:// 
+```
+
+修改为：
+
+```properties
+ExecStart=/usr/bin/dockerd 
 ```
 
 
 
-（3）若要安装指定版本的 Docker CE 和 containerd 
+（3）启动docker：
 
-> - 列出仓库中可用的版本列表
->
->     ```bash
->     $ apt-cache madison docker-ce
->     
->       docker-ce | 5:18.09.1~3-0~ubuntu-xenial | https://download.docker.com/linux/ubuntu  xenial/stable amd64 Packages
->       docker-ce | 5:18.09.0~3-0~ubuntu-xenial | https://download.docker.com/linux/ubuntu  xenial/stable amd64 Packages
->       docker-ce | 18.06.1~ce~3-0~ubuntu       | https://download.docker.com/linux/ubuntu  xenial/stable amd64 Packages
->       docker-ce | 18.06.0~ce~3-0~ubuntu       | https://download.docker.com/linux/ubuntu  xenial/stable amd64 Packages
->       ...
->     ```
->
->     第二列就是版本
->
->     
->
-> - 指定版本进行安装
->
->     ```bash
->     $ sudo apt-get install docker-ce=<VERSION_STRING> docker-ce-cli=<VERSION_STRING> containerd.io
->     ```
->
->     例如安装`5:18.09.1~3-0~ubuntu-xenial`版本的
->
->     ```bash
->     $ sudo apt-get install docker-ce=5:18.09.1~3-0~ubuntu-xenial docker-ce-cli=5:18.09.1~3-0~ubuntu-xenial containerd.io
->     ```
->
->     
+```bash
+systemctl start docker
+```
 
 
 
-## 5.验证是否安装成功
+## 4.验证是否安装成功
 
 （1）首先启动 docker 服务
 
 ```
-service docker start
+systemctl start docker
 ```
 
 
 
-（2）然后，我们就通过运行 `hello-world`来验证是否安装成功
+（2）查看 Docker 版本信息
 
 ```bash
-$ sudo docker run hello-world
+sudo docker version
+```
+
+
+
+（3）然后，我们就通过运行 `hello-world`来验证是否安装成功
+
+```bash
+sudo docker run hello-world
+```
+
+
+
+
+
+## 5.更新Docker用户组
+
+当执行docker相关命令，如`docker version`时，可以看到存在权限不足的问题，是因为docker只允许root用户执行
+
+```bash
+ray@ray:~$ docker version
+Client: Docker Engine - Community
+ Version:           19.03.2
+ API version:       1.40
+ Go version:        go1.12.8
+ Git commit:        6a30dfca03
+ Built:             Thu Aug 29 05:29:49 2019
+ OS/Arch:           linux/amd64
+ Experimental:      false
+Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get http://%2Fvar%2Frun%2Fdocker.sock/v1.40/version: dial unix /var/run/docker.sock: connect: permission denied
+```
+
+
+
+为解决此问题，可将当前用户添加到Docker用户组，然后注销用户重新登录即可。
+
+```bash
+sudo usermod -aG docker ${USER}
 ```
 
 

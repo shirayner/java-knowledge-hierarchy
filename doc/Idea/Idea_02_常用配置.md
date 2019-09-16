@@ -207,7 +207,7 @@ GoogleStyle：[eclipse-java-google-style.xml](http://hzerodoc.saas.hand-china.co
 
 ## 5.IntelliJ IDEA 注释模板
 
-IntelliJ IDEA 只能通过设置注释模板来实现，请先导入[IDEA注释模板](http://hzerodoc.saas.hand-china.com/files/docs/development-specification/backend-development-specification/basic/comment/FileTemplate.jar)。*File -> Import Settings*
+IntelliJ IDEA 只能通过设置注释模板来实现，请先导入[IDEA注释模板](./resources/FileTemplate.jar)。*File -> Import Settings*
 
 该模板内置了几种常用注释：
 
