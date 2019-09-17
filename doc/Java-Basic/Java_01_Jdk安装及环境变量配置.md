@@ -80,6 +80,18 @@ java -version
 
 
 
+# 二/ Windows 安装 Jdk
+
+```
+JAVA_HOME=jdk安装目录
+Path=%JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;
+ClassPath=.;%JAVA_HOME%\bin;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar
+```
+
+
+
+
+
 
 
 

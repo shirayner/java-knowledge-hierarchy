@@ -79,6 +79,33 @@ Tomcat started.
 
 
 
+# 二/WIndow下安装
+
+## 1.下载解压
+
+
+
+
+
+## 2.配置环境变量
+
+```properties
+CATALINA_HOME   =C:\dev-env\Tomcat\apache-tomcat-9.0.24
+CATALINA_BASE   =%CATALINA_HOME%
+CATALINA_TMPDIR =%CATALINA_HOME%\temp
+Path            =%CATALINA_HOME%\lib;%CATALINA_HOME%\bin
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 # 参考资料
