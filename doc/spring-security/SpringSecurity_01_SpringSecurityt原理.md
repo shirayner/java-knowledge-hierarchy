@@ -136,7 +136,12 @@ SecurityFilterAutoConfiguration
 
 
 
+SpringSecurity 认证流程：
 
+> - [Spring Security 认证执行流程](https://www.cnblogs.com/niceyoo/p/10969588.html)
+> - [Spring Security验证流程剖析及自定义验证方法](https://blog.csdn.net/u011467458/article/details/90718849)
+> - [SpringSecurity登录验证流程](https://blog.csdn.net/qq_34886599/article/details/80370714)
+> - [SpringSecurity认证流程详解](https://www.cnblogs.com/jpfss/p/11022457.html)
 
 
 
