@@ -79,6 +79,66 @@ maven内置的`complier`插件默认编译版本为1.5，若想支持其他的�
 
 
 
+## 4.maven-shade-plugin
+
+此插件作用于 package 阶段，因此可用此插件打包
+
+> 参考：[十五、使用maven-shade-plugin插件将项目打成可执行的jar包]( https://blog.csdn.net/newbie_907486852/article/details/80921827 )
+
+
+
+```xml
+ <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>1.4</version>
+                <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                </configuration>
+                <executions>
+                    <execution>
+                        <!-- 执行package的phase -->
+                        <phase>package</phase>
+                        <!-- 为这个phase绑定goal -->
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <!-- 过滤掉以下文件，不打包 ：解决包重复引用导致的打包错误-->
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                            <transformers>
+                                <transformer
+                                    implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/spring.handlers</resource>
+                                </transformer>
+                                <!-- 打成可执行的jar包 的主方法入口-->
+                                <transformer
+                                    implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.yang.MainTest</mainClass>
+                                </transformer>
+
+                                <transformer
+                                    implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/spring.schemas</resource>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+```
+
+
+
 
 
 

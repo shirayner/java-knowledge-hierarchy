@@ -37,3 +37,15 @@ Path=%CMDER_HOME%\bin
 
 
 
+
+
+
+
+
+
+## 2.Xshell 和Xftp
+
+直接去官网下载教育版即可
+
+> https://www.netsarang.com/zh/free-for-home-school/
+
