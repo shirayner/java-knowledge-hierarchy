@@ -61,7 +61,7 @@
 /**
  * @desc hello
  *
- * @author rui.shi@hand-china.com
+ * @author ray
  * @date 2018/10/8
  */
 ```
@@ -71,11 +71,86 @@
 /**
  * @desc:
  * 
- * @author: rui.shi@hand-china.com
+ * @author: ray
  * @date: ${DATE}
  */
 ```
 ![在这里插入图片描述](https://img-blog.csdn.net/20181008153131714?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI2OTgxMzMz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
+
+
+## 7.配置注释模板
+
+### 7.1 FileHeader
+
+（1）FileHeader
+
+```java
+/**
+ * <p>
+ * $description$
+ * </p>
+ * 
+ * @author $USER$ $DATE$ $TIME$
+ */
+```
+
+
+
+（2）HtmlHeader
+
+```html
+<!--
+  $description$  
+  @author $USER$ $DATE$ $TIME$
+-->
+```
+
+
+
+
+
+### 7.2 注释模板
+
+![image-20191218132806311](images/image-20191218132806311.png)
+
+
+
+（1）cc
+
+```java
+/**
+ * <p>
+ * $description$
+ * </p>
+ * 
+ * @author $USER$ $DATE$ $TIME$
+ */
+```
+
+
+
+（2）mc
+
+```java
+/**
+ * $description$
+ *
+ $param$
+ * @author $USER$ $DATE$ $TIME$
+ * @return $RETURN$
+ */
+```
+
+
+
+（3）dc
+
+```java
+//===============================================================================
+//  $TITLE$
+//===============================================================================
+```
 
 
 
