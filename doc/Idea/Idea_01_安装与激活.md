@@ -52,21 +52,14 @@ idea
 
 
 
-
 # 三、激活
-Idea激活有如下两种方式
-> - Activation code
-> - Lisence Server
 
-Lisence Server 暂时不可用
+由于 [idea.lanyus.com](http://idea.lanyus.com/) 不再提供idea激活码，因此暂时只能通过开源项目申请激活码了
 
-### 1. Activation code
-> [idea.lanyus.com](http://idea.lanyus.com/)
->
+参考：
 
-按照上述网址中的指示去做即可：
-> - 请将“0.0.0.0 account.jetbrains.com”添加到hosts文件中
-> - 使用激活码激活
+> - [免费申请和使用IntelliJ IDEA商业版License指南]( https://cloud.tencent.com/developer/article/1495368 )
+> - [使用GitHub开源项目 申请 Intelli License](https://blog.csdn.net/lianghecai52171314/article/details/102695868)
 
 
 
@@ -76,4 +69,7 @@ Lisence Server 暂时不可用
 
 
 
-### 2.license server
+
+
+
+
