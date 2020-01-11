@@ -456,7 +456,7 @@ mysql> flush privileges;
 
 
 
-# 三、Window 安装Mysql
+# 二、Window 安装Mysql
 
 ## 1.下载Mysql
 
@@ -525,18 +525,22 @@ default-character-set=UTF8MB4
 以管理员权限运行cmd，执行如下命令
 
 ```bash
-mysqld install
+mysqld -install
 ```
 
 
 
-> mysqld --install [服务名]
+> mysqld -install [服务名]
 >
 > 后面的服务名可以不写，默认的名字为 mysql。当然，如果你的电脑上需要安装多个MySQL服务，就可以用不同的名字区分了，比如 mysql5 和 mysql8。
 
 
 
 ![1561533071238](images/1561533071238.png)
+
+
+
+> 删除服务: `mysqld -remove`
 
 
 
@@ -587,6 +591,14 @@ mysql> ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'root';
 
 
 
+> 默认会有`'root'@'localhost'`用户，若没有`'root'@'%'` 则自己创建即可
+>
+> ```mysql
+>  CREATE USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'root';
+> ```
+
+
+
 ### 5.2 创建用户
 
 ```bash
@@ -603,6 +615,28 @@ mysql> CREATE USER 'ray'@'%' IDENTIFIED WITH mysql_native_password BY 'ray';
 mysql> grant all  on *.* to ray@'%';
 mysql> flush privileges;
 ```
+
+
+
+
+
+# 三、Mysql连接管理工具
+
+开源的Mysql连接管理工具如下：
+
+## 1.DBever
+
+> https://dbeaver.io/
+
+
+
+## 2.HeidiSql
+
+> https://www.heidisql.com/
+
+
+
+
 
 
 
