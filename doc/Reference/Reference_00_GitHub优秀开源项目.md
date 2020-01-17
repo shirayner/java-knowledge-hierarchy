@@ -133,7 +133,7 @@
 | #    | Repository                                                   | Description                                                  |
 | ---- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | 1    | [LiHaodong888 / pre](https://github.com/LiHaodong888/pre)    | Pre基于Spring Boot 、Spring Security的RBAC权限管理系统, 做更简洁的后台管理系统。 |
-|      |                                                              |                                                              |
+|      | [elunez/eladmin](https://github.com/elunez/eladmin)          | 项目基于 Spring Boot 2.1.0 、 Jpa、 Spring Security、redis、Vue的前后端分离的后台管理系统，项目采用分模块开发方式， *权**限*控制采用 RBAC，支持*数**据*字典与*数**据**权**限*管理，支持一键生成前后端… |
 |      | [ Heeexy/SpringBoot-Shiro-Vue](https://github.com/Heeexy/SpringBoot-Shiro-Vue) | 提供一套基于Spring Boot-Shiro-Vue的权限管理思路.前后端都加以控制,做到按钮/接口级别的权限 |
 |      | [lenve/vhr](https://github.com/lenve/vhr)                    | 微人事是一个前后端分离的人力资源管理系统，项目采用SpringBoot+Vue开发。 |
 
