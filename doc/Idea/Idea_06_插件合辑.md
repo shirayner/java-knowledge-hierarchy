@@ -189,11 +189,18 @@ MyBatis Log Plugin 这款插件是直接将Mybatis执行的sql脚本显示出来
 
 
 
+## 21 Tomcat 插件
+
+推荐：
+
+> - [intellij idea安装及Tomcat插件集成](https://blog.csdn.net/qq_33352259/article/details/81975882)
 
 
 
+对于社区版，推荐如下Tomcat插件
 
-
+> - Tomcat runner plugin for IntelliJ
+> - Smart Tomcat
 
 
 

@@ -14,7 +14,7 @@
 
 
 
-# 一、构建`Restful API`及其测试
+# 一、构建`Restful API`
 
 ## 1.创建子模块
 
@@ -270,11 +270,15 @@ public class UserController {
 
 
 
-## 3.单元测试
+# 二、单元测试
 
 关于单元测试，一般做service层测试验证逻辑的正确性即可，如若需要，也可做controller层测试。
 
-### 3.1 `service`层测试
+## 1. `service`层测试
+
+### 1.1 Junit进行service层测试
+
+使用Junit进行service层测试
 
 `service`层测试主要使用`Junit`
 
@@ -363,7 +367,20 @@ public class UserServiceImplTest {
 
 
 
-### 3.2 `controller`层测试
+### 1.2 使用Mockito进行Service层测试
+
+参考：
+
+> - [Spring boot, mockito and junit – unit test service layer](https://howtodoinjava.com/spring-boot2/testing/spring-boot-mockito-junit-example/)
+> - [MockMvc + Mockito = Epic Tests](https://myshittycode.com/2014/01/16/mockmvc-mockito-epic-tests/)
+> - [Spring boot, mockito and junit – 单元测试service层](https://my.oschina.net/wenjinglian/blog/3085410)
+> - 
+
+
+
+
+
+## 2. `controller`层测试
 
 `controler`层的测试主要使用`MockMvc`
 
@@ -499,9 +516,7 @@ public class UserControllerTest {
 
 
 
-# 
-
-# 二、单元测试总结
+# 三、单元测试总结
 
 ## 1.`Hamcrest `
 
