@@ -39,3 +39,13 @@
 
 
 
+## 2.排序
+
+```java
+taskSetList.stream().sort((o1, o2) -> o1.getId() - o2.getId());
+
+taskSetList.stream().sorted(Comparator.comparing(TaskSet::getId).reversed()).findFirst()
+```
+
+
+
