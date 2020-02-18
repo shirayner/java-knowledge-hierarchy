@@ -14,7 +14,7 @@
 
 
 
-# 一、开发软件安装
+# 一、命令行工具
 
 ## 1.Cmder
 
@@ -41,11 +41,45 @@ Path=%CMDER_HOME%\bin
 
 
 
+# 二、远程连接工具
 
-
-## 2.Xshell 和Xftp
+## 1.Xshell 和Xftp
 
 直接去官网下载教育版即可
 
 > https://www.netsarang.com/zh/free-for-home-school/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

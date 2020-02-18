@@ -16,7 +16,7 @@
 
 # 二、版本管理
 
-### 1. Git
+## 1. Git
 
 
 
@@ -50,11 +50,37 @@
 
 
 
-# 六、数据库图形化客户端工具
+# 六、数据存储
 
-## 1. navicat prenium 12
+## 1.mysql、pgsql
 
-## 2. Studio 3T
+### 1.1 navicat prenium 12
+
+
+
+## 2.Oracle
+
+### 2.1 PL/SQL devleloper
+
+
+
+## 3.MogoDB
+
+### 3.1 Studio 3T
+
+
+
+## 4.redis
+
+### 4.1 AnotherRedisDesktopManager
+
+redis可视化工具
+
+> https://github.com/qishibo/AnotherRedisDesktopManager
+
+
+
+
 
 
 
@@ -64,7 +90,27 @@
 
 
 
-# 八、linux远程连接工具
+
+
+# 八、命令行工具
+
+## 1.cmder
+
+> https://cmder.net/
+>
+> [Windows上的程序员神器——Cmder](https://juejin.im/entry/5a333f2f6fb9a0451969a164)
+
+
+
+
+
+
+
+
+
+
+
+# 九、linux远程连接工具
 
 ## 1. xhell 6
 
@@ -76,21 +122,19 @@
 
 
 
-# 九、测试
+# 十、测试
 
 ## 1. Postnan
 
 
 
-# 十、容器
+# 十一、容器
 
 ## 1. docker
 
 
 
-# 十一、缓存
 
-## 1. redis
 
 
 
