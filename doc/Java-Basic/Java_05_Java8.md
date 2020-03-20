@@ -45,6 +45,10 @@
 taskSetList.stream().sort((o1, o2) -> o1.getId() - o2.getId());
 
 taskSetList.stream().sorted(Comparator.comparing(TaskSet::getId).reversed()).findFirst()
+    
+securityResourceList.stream().sorted(Comparator.comparing(securityResource -> securityResource.getResourcePath().toLowerCase())).collect(Collectors.toList());
+
+securityResourceList.stream().sorted(Comparator.comparing(SecurityResource::getDatachangeLasttime)).collect(Collectors.toList());
 ```
 
 
