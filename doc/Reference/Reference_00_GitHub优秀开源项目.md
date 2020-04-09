@@ -203,7 +203,9 @@
 |      | [qiurunze123 / miaosha](https://github.com/qiurunze123/miaosha) | ⭐⭐⭐⭐秒杀系统设计与实现.互联网工程师进阶与分析                |
 |      | [liuxx001 / bird-java](https://github.com/liuxx001/bird-java) | 分布式服务快速开发框架，专注于业务开发，提炼中后台应用中的经典业务场景，大幅减少开发编码量。 |
 |      | [TyCoding/cloud-template](https://github.com/TyCoding/cloud-template) | Spring Cloud Template, 一套极简的Spring Cloud项目开发模板    |
-| 2    | [hs-web/hsweb-framework](https://github.com/hs-web/hsweb-framework) | hsweb (haʊs wɛb) 是一个用于快速搭建企业后台管理系统的基础项目,集成一揽子便捷功能如:便捷的通用增删改查,强大的权限管理,动态多数据源,动态表单,在线数据库维护等. 基于 spring-boot,mybaits. |
+|      | [hs-web/hsweb-framework](https://github.com/hs-web/hsweb-framework) | hsweb (haʊs wɛb) 是一个用于快速搭建企业后台管理系统的基础项目,集成一揽子便捷功能如:便捷的通用增删改查,强大的权限管理,动态多数据源,动态表单,在线数据库维护等. 基于 spring-boot,mybaits. |
+|      | [lihengming/spring-boot-api-project-seed](https://github.com/lihengming/spring-boot-api-project-seed) | 一个基于Spring Boot & MyBatis的种子项目，用于快速构建中小型API、RESTful API项目~ |
+|      | [zhangdaiscott/jeecg-boot](https://github.com/zhangdaiscott/jeecg-boot) | 一款基于代码生成器的JAVA快速开发平台，开源界“小普元”超越传统商业企业级开发平台！采用前后端分离架构：SpringBoot 2.x，Ant Design&Vue，Mybatis-plus，Shiro，JWT。强大的代码生成器让前后端代码一键生成，无需写任何代码! 引领新的开发模式(OnlineCoding模式-> 代码生成器模式-> 手工MERGE智能开发)，帮助Java项目解决70%的重复工作，让开发更多关注业务逻辑。既能快速提高开发效率，帮助公司节省成本，同时又不失灵活性。JeecgBoot还独创在线开发模式（No代码）：在线表单配置（表单设计器）、移动配置能力、在线工作流配置（流程设计器）、在线报表配置、在线图表配置、插件能力（可插拔）等等 [http://www.jeecg.com](http://www.jeecg.com/) |
 |      | [justauth/JustAuth](https://github.com/justauth/JustAuth)    | 史上最全的整合第三方登录的开源库。目前已支持Github、Gitee、微博、钉钉、百度、Coding、腾讯云开发者平台、OSChina、支付宝、QQ、微信、淘宝、Google、Facebook、抖音、领英、小米、微软、今日头条、Teambition、StackOverflow、Pinterest、人人、华为、企业微信、酷家乐、Gitlab、美团、饿了么和推特等第三方平台的授权登录。 Login, so easy! |
 |      | [halo-dev / halo](https://github.com/halo-dev/halo)          | Halo 一款现代化的个人独立博客系统                            |
 |      | [88250/solo](https://github.com/88250/solo)                  | B3log 分布式社区的博客端，欢迎加入下一代社区网络。           |
