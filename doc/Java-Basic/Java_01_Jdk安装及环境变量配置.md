@@ -24,6 +24,17 @@
 
 
 
+国内镜像：
+
+> - 华为云1：https://repo.huaweicloud.com/java/jdk/
+> - 华为云2：https://mirrors.huaweicloud.com/java/jdk/
+> - https://github.com/frekele/oracle-java/releases
+> - 
+
+
+
+
+
 ## 2.解压
 
 ```bash
@@ -80,7 +91,7 @@ java -version
 
 
 
-# 二/ Windows 安装 Jdk
+# 二、 Windows 安装 Jdk
 
 ```
 JAVA_HOME=jdk安装目录
