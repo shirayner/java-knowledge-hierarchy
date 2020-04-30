@@ -10,6 +10,22 @@
 
 # 前言
 
+## 推荐阅读
+
+> - [一个 Git 分支协作模式的进化故事](https://blog.gitee.com/2019/04/25/gitee-branch/)
+> - [ 码云Git flow的最佳团队协作实践](https://gitee.com/oschina/gitee_best_practices/blob/master/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/%E7%A0%81%E4%BA%91Git%20flow%E7%9A%84%E6%9C%80%E4%BD%B3%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C%E5%AE%9E%E8%B7%B5.md)
+> - [如何写好 Git commit log?](https://www.zhihu.com/question/21209619/answer/257574960)
+> - [优雅的提交你的 Git Commit Message](https://zhuanlan.zhihu.com/p/34223150)
+> - [git commit 规范指南](https://segmentfault.com/a/1190000009048911)
+> - [你可能会忽略的 Git 提交规范](https://blog.csdn.net/y491887095/article/details/80594043)
+> - 
+
+
+
+
+
+
+
 
 
 # 一、分支管理规范
@@ -105,6 +121,23 @@ Choerodon中采取了GitHubFlow的模式，并提供多种分支类型。
 - [STYLE] style 代码格式化改动，缺少分号等
 
 
+
+
+
+## 三、工具的使用
+
+工具列表：
+
+> - [commitizen/cz-cli](https://link.zhihu.com/?target=https%3A//github.com/commitizen/cz-cli) 
+> - [commitizen/cz-conventional-changelog](https://link.zhihu.com/?target=https%3A//github.com/commitizen/cz-conventional-changelog) 
+> -  [conventional-changelog/standard-version](https://link.zhihu.com/?target=https%3A//github.com/conventional-changelog/standard-version)
+> - [marionebl/commitlint](https://link.zhihu.com/?target=https%3A//github.com/marionebl/commitlint)
+
+
+
+使用教程：
+
+> - [Java项目如何使用commitizen插件](https://www.jianshu.com/p/dc3581887cbb)
 
 
 
