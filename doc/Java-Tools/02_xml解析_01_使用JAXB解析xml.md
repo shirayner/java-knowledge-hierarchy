@@ -213,9 +213,12 @@ public interface XmlParser {
 
     <T> T parseObject(String xmlContent, Class<T> claaz);
 
+    <T> T parseObject(InputStream inputStream, Class<T> claaz);
+
     String toXmlString(Object obj);
 
 }
+
 ```
 
 
@@ -241,9 +244,23 @@ public interface XmlParser {
       }
   
       @Override
+      public <T> T parseObject(InputStream inputStream, Class<T> claaz) {
+          Object result = null;
+  
+          try {
+              JAXBContext context = JAXBContext.newInstance(claaz);
+              Unmarshaller unmarshaller = context.createUnmarshaller();
+              result = unmarshaller.unmarshal(inputStream);
+          } catch (JAXBException e) {
+              log.error("[[type=JAXBXmlParser]] can not parse xml content to class:{}", claaz.toString(), e);
+          }
+          return (T) result;
+      }
+  
+      @Override
       public String toXmlString(Object obj) {
           String result = null;
-          try {
+        try {
               JAXBContext context = JAXBContext.newInstance(obj.getClass());
               Marshaller marshaller = context.createMarshaller();
               StringWriter writer = new StringWriter();
@@ -257,7 +274,7 @@ public interface XmlParser {
   }
   
   ```
-
+  
   
 
 ## 4.Spock测试用例
