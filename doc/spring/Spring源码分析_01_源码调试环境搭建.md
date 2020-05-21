@@ -92,7 +92,7 @@ git checkout -b spring-sourcecode-analysis
 
 
 
-![1563942808878](images/1563942808878.png)
+![image-20200521211523867](images/image-20200521211523867.png)
 
 
 
@@ -156,21 +156,23 @@ Idea中依次选择 `File -> Open...`，然后选择 spring-framework，点击ok
 
 （2）然后输入项目坐标 `my-test`
 
-![image-20200520223640380](images/image-20200520223640380.png)
+![image-20200521213909524](images/image-20200521213909524.png)
 
 
 
 （3）一路下一步，然后点击Finish，新模块就创建好了
 
-## 2.build.gradle
+## 2.添加依赖
+
+build.gradle 中添加如下依赖
 
 ```groovy
 plugins {
     id 'java'
 }
 
-group 'com.ray.study.sourcecode'
-version '1.0.0'
+group 'org.springframework'
+version '5.2.7.BUILD-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
@@ -181,7 +183,7 @@ repositories {
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.8'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'
-    implementation group: 'org.springframework', name: 'spring-context', version: '5.1.8.RELEASE'
+    compile(project(":spring-context"))
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
@@ -189,11 +191,52 @@ dependencies {
 
 
 
+## 3.创建测试类
+
+（1）实体类
+
+```java
+@Data
+public class MyTestBean {
+
+	private String testStr="testStr";
+
+}
+```
 
 
 
+（3）在 resource 目录创建配置文件`beanFactoryTest.xml`
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="myTestBean" class="com.ray.study.spring.ioc.MyTestBean"/>
+
+</beans>
+```
 
 
+
+（3）创建Spring容器的测试用例
+
+```java
+public class BeanFactoryTest {
+	@Test
+	public void testSimpleLoad() {
+		BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("beanFactoryTest.xml"));
+		MyTestBean bean = (MyTestBean) beanFactory.getBean("myTestBean");
+		Assert.assertEquals("testStr", bean.getTestStr());
+	}
+}
+```
+
+
+
+这样就可以运行测试类，进行源码的Debug了
 
 
 
