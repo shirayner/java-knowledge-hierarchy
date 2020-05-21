@@ -34,13 +34,25 @@ fork一份Spring Framework源码
 
 
 
+方式一： 可以直接去 github fork
+
 ![1563942183877](images/1563942183877.png)
 
 
 
 
 
+方式二： 去[码云](https://gitee.com/) ->  新建仓库 -> 导入已有仓库
 
+![image-20200520225753946](images/image-20200520225753946.png)
+
+然后填写spring 仓库地址： https://github.com/spring-projects/spring-framework ， 然后点击创建即可
+
+
+
+![image-20200520225900676](images/image-20200520225900676.png)
+
+推荐方式二，下载速度快得很多很多很多
 
 
 
@@ -48,14 +60,14 @@ fork一份Spring Framework源码
 
 fork完成后，在自己的仓库列表会出现刚刚fork的 spring-framework 项目，将其clone到本地。
 
+![image-20200520231016173](images/image-20200520231016173.png)
 
 
-![1563942318750](images/1563942318750.png)
 
 
 
 ```bash
-git clone git@github.com:shirayner/spring-framework.git
+git clone git@gitee.com:shirayner/spring-framework.git
 ```
 
 
@@ -64,17 +76,17 @@ git clone git@github.com:shirayner/spring-framework.git
 
 
 
-![1563942535023](images/1563942535023.png)
+![image-20200520231104337](images/image-20200520231104337.png)
 
-可以看到Spring目前最新的分支是 5.1.x
+可以看到Spring目前最新的分支是 5.2.x
 
 因此，我们将基于此分支来创建我们的源码解析分支：
 
 ```bash
-# 从master分支切换到 5.1.x分支
-git checkout 5.1.x
+# 从master分支切换到 5.2.x分支
+git checkout 5.2.x
 
-# 基于5.1.x 创建并切换到 spring-sourcecode-analysis
+# 基于5.2.x 创建并切换到 spring-sourcecode-analysis
 git checkout -b spring-sourcecode-analysis
 ```
 
@@ -86,7 +98,9 @@ git checkout -b spring-sourcecode-analysis
 
 ## 2.导入Idea
 
-> 参见 [import-into-idea.md](https://github.com/spring-projects/spring-framework/blob/master/import-into-idea.md) 将 spring-framework 导入Idea
+> 参考：
+>
+> -  [import-into-idea.md](https://github.com/spring-projects/spring-framework/blob/master/import-into-idea.md)
 
 
 
@@ -126,28 +140,27 @@ Idea中依次选择 `File -> Open...`，然后选择 spring-framework，点击ok
 
 
 
+# 三、创建测试模块
+
+为了方便编写对Spring测试的代码，我们可以在 spring-framework 工程下创建一个 `my-test` 子模块。
+
+## 1.创建子模块
+
+（1）spring-framework项目右键 -> New -> Module...  
+
+这里我们选择创建一个 Gradle 工程
+
+![image-20200520222917271](images/image-20200520222917271.png)
 
 
 
+（2）然后输入项目坐标 `my-test`
+
+![image-20200520223640380](images/image-20200520223640380.png)
 
 
 
-# 三、创建测试工程
-
-## 1.创建项目
-
-```properties
-group = 'com.ray.study.sourcecode'
-artifact ='spring-sourcecode-analysis'
-```
-
-
-
-
-
-
-
-
+（3）一路下一步，然后点击Finish，新模块就创建好了
 
 ## 2.build.gradle
 
@@ -196,6 +209,8 @@ dependencies {
 
 # 参考资料
 
-1. [Spring5.x源码分析 | 从踩坑到放弃之环境搭建](https://blog.csdn.net/evan_leung/article/details/81714604)
+1. [Spring源码阅读环境搭建](https://www.cnblogs.com/zhangfengxian/p/11072500.html)
+
+2. [Spring5.x源码分析 | 从踩坑到放弃之环境搭建](https://blog.csdn.net/evan_leung/article/details/81714604)
 
    ​	

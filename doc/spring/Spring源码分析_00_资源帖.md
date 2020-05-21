@@ -27,7 +27,10 @@
 # 三、精选项目
 
 > - [seaswalker/spring-analysis](https://github.com/seaswalker/spring-analysis)
+> - [huashen/spring](https://github.com/huashen/spring)
+> - [YunaiV/spring-framework](https://github.com/YunaiV/spring-framework)
 > - [shiyujun/spring-framework](https://github.com/shiyujun/spring-framework)
+> - [vip-augus/spring-analysis-note](https://gitee.com/vip-augus/spring-analysis-note)
 > - 
 
 
