@@ -1,57 +1,307 @@
-[TOC]
+# Spring容器的基本实现
+
+[toc]
+
+## 前言
+
+### 推荐阅读
+
+> - [Spring BeanFactory 类图详解](https://blog.csdn.net/qq_34090008/article/details/78772189)
+> - [spring 主要涉及类类图](https://blog.csdn.net/strivezxq/article/details/44560771)
+> - [Spring容器](https://www.jianshu.com/p/ab1bf09f6501)
+
+## 一、基本概念
+
+### 1.容器相关类图
 
 
 
-# 前言
+#### 1.1 容器概览
+
+```plantuml
+@startuml
+
+interface ApplicationContext #Orange extends EnvironmentCapable, ListableBeanFactory, HierarchicalBeanFactory, MessageSource, ApplicationEventPublisher, ResourcePatternResolver {
+
+}
+
+/'
+' 1.BeanFactory
+'/
+interface BeanFactory #Orange {
+}
+
+interface AutowireCapableBeanFactory extends BeanFactory {
+
+}
+
+interface ListableBeanFactory extends BeanFactory {
+
+}
+
+interface HierarchicalBeanFactory extends BeanFactory {
+
+}
+
+
+interface ConfigurableBeanFactory extends HierarchicalBeanFactory, SingletonBeanRegistry {
+
+}
+
+
+interface AliasRegistry {
+
+}
+
+class SimpleAliasRegistry implements AliasRegistry {
+
+}
+
+class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements SingletonBeanRegistry {
+
+}
+
+abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanRegistry {
+
+}
+
+abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport implements ConfigurableBeanFactory {
+
+}
+
+abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowireCapableBeanFactory {
+
+}
+
+interface ConfigurableListableBeanFactory extends ListableBeanFactory, AutowireCapableBeanFactory, ConfigurableBeanFactory {
+
+}
+
+class DefaultListableBeanFactory #LightSalmon extends AbstractAutowireCapableBeanFactory implements ConfigurableListableBeanFactory, BeanDefinitionRegistry, Serializable {
+
+}
+
+
+class XmlBeanFactory #Cyan extends DefaultListableBeanFactory {
+
+}
+
+
+/'
+' 2.ApplicationEventPublisher、EnvironmentCapable、MessageSource
+'/
+interface ApplicationEventPublisher {
+
+}
+
+interface EnvironmentCapable {
+
+}
+
+interface MessageSource {
+
+}
+
+
+/'
+' 3.ResourceLoader
+'/
+interface ResourceLoader {
+
+}
+
+interface ResourcePatternResolver extends ResourceLoader {
+
+}
+
+class DefaultResourceLoader implements ResourceLoader {
+
+}
+
+
+'note left of ApplicationContext: On last defined class
+
+/'
+' 4.ApplicationContext
+'/
+interface ConfigurableApplicationContext extends ApplicationContext, Lifecycle, Closeable {
+
+}
+
+interface Lifecycle {
+
+}
+
+interface Closeable extends AutoCloseable {
+
+}
+
+interface AutoCloseable {
+
+}
+
+abstract class AbstractApplicationContext extends DefaultResourceLoader implements ConfigurableApplicationContext {
+
+}
+
+abstract class AbstractRefreshableApplicationContext extends AbstractApplicationContext {
+
+}
+
+abstract class AbstractRefreshableConfigApplicationContext extends AbstractRefreshableApplicationContext implements BeanNameAware, InitializingBean {
+
+
+}
+
+interface InitializingBean {
+
+}
+
+interface BeanNameAware extends Aware {
+
+}
+
+interface Aware {
+
+}
+
+/'
+' 4.1 AbstractXmlApplicationContext
+'/
+abstract class AbstractXmlApplicationContext #LightSalmon extends AbstractRefreshableConfigApplicationContext {
+
+}
+
+class ClassPathXmlApplicationContext #Cyan extends AbstractXmlApplicationContext {
+
+}
+
+class FileSystemXmlApplicationContext #Cyan extends AbstractXmlApplicationContext {
+
+}
+
+
+/'
+' 4.2 AbstractRefreshableWebApplicationContext
+'/
+
+abstract class AbstractRefreshableWebApplicationContext #LightSalmon extends AbstractRefreshableConfigApplicationContext implements ConfigurableWebApplicationContext, ThemeSource {
+
+}
+
+interface ThemeSource {
+
+}
+
+class XmlWebApplicationContext #Cyan extends AbstractRefreshableWebApplicationContext {
+
+}
+
+interface ConfigurableWebApplicationContext extends WebApplicationContext, ConfigurableApplicationContext {
+
+}
+
+interface WebApplicationContext extends ApplicationContext {
+
+}
+
+
+class GenericApplicationContext #LightSalmon extends AbstractApplicationContext implements BeanDefinitionRegistry {
+
+}
+
+interface BeanDefinitionRegistry extends AliasRegistry {
+
+}
+
+interface AliasRegistry {
+
+}
+
+class AnnotationConfigApplicationContext #Cyan extends GenericApplicationContext implements AnnotationConfigRegistry {
+
+}
+
+interface AnnotationConfigRegistry {
+
+}
+
+
+class AnnotationConfigWebApplicationContext #Cyan extends AbstractRefreshableWebApplicationContext implements AnnotationConfigRegistry {
+
+}
+
+@enduml
+```
+
+#### 1.2 DefaultListableBeanFactory
+
+```plantuml
+@startuml
+interface BeanFactory #Orange {
+}
+
+interface AutowireCapableBeanFactory extends BeanFactory {
+
+}
+
+interface HierarchicalBeanFactory extends BeanFactory {
+
+}
+
+interface ListableBeanFactory extends BeanFactory {
+
+}
+
+
+interface ConfigurableBeanFactory extends HierarchicalBeanFactory, SingletonBeanRegistry {
+
+}
+
+interface AliasRegistry {
+
+}
+
+class SimpleAliasRegistry implements AliasRegistry {
+
+}
+
+class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements SingletonBeanRegistry {
+
+}
+
+abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanRegistry {
+
+}
+
+abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport implements ConfigurableBeanFactory {
+
+}
+
+abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory implements AutowireCapableBeanFactory {
+
+}
+
+interface ConfigurableListableBeanFactory extends ListableBeanFactory, AutowireCapableBeanFactory, ConfigurableBeanFactory {
+
+}
+
+class DefaultListableBeanFactory #LightSalmon extends AbstractAutowireCapableBeanFactory implements ConfigurableListableBeanFactory, BeanDefinitionRegistry, Serializable {
+
+}
+
+interface BeanDefinitionRegistry extends AliasRegistry {
+
+}
+
+class XmlBeanFactory extends DefaultListableBeanFactory {
+
+}
 
 
 
-
-
-
-
-# 一、两个核心类
-
-## 1.DefaultListableBeanFactory
-
->- XmlBeanFactory 继承向 DefaultListableBeanFactory ，而 **DefaultListableBeanFactory 是整个bean**
->  **加载的核心部分，是Spring 注册及加载 bean 的默认实现**。
->
->- 而对于 XmlBeanFactory  与 DefaultListableBeanFactory 不同的地方其实是在 XmlBeanFactory  中使用了自定义的XML 读取器 XmlBeanDefinitionReader ，实现了个性化的 BeanDefinitionReader 读取。
->-  DefaultListableBeanFactory  继承了 AbstractAutowireCapableBeanFactory 并实现了ConfigurableListableBeanFactory 以及
->  BeanDefinitionRegistry 接口。
-
-
-
-### 1.1 层次结构图
-
-![1561820104687](images/1561820104687.png)
-
-
-
-### 1.2 类图
-
-
-
-![DefaultListableBeanFactory](images/DefaultListableBeanFactory.png)
-
-
-
-
-
-
-
-## 2.XmlBeanDefinitionReader
-
-XML 配置文件的读取是 Spring 中重要的功能，因为 Spring 的大部分功能都是以配置作为
-切入点的，那么我们可以从 XmlBeanDefinitionReader 中梳理一下资源文件读取、解析及注册的
-大致脉络，首先我们看看各个类的功能：
-
-
-
-
-
-
+@enduml
+```
 
 
 
