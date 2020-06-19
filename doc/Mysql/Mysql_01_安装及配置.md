@@ -505,6 +505,10 @@ character-set-server=UTF8MB4
 default-storage-engine=INNODB
 # 默认使用“mysql_native_password”插件认证
 default_authentication_plugin=mysql_native_password
+# 开启binlog
+log-bin=mysql-bin
+binlog-format=Row
+server-id=1001
 
 [mysql]
 # 设置mysql客户端默认字符集
