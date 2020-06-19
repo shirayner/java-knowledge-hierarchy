@@ -2872,7 +2872,7 @@ protected <T> T doGetBean(final String name, @Nullable final Class<T> requiredTy
 
 
 
-```
+```java
 // DefaultSingletonBeanRegistry
 public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory) {
 
