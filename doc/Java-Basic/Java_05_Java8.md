@@ -37,6 +37,38 @@
 
 
 
+（2）根据Filed去重
+
+```java
+public class DistinctByKey {
+
+    public static <T> Predicate<T> distinctByKey(Function<? super T,Object> keyExtractor) {
+        Map<Object,Boolean> seen = new ConcurrentHashMap<>();
+        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+    }
+
+}
+```
+
+
+
+用法：
+
+```java
+ List<SecurityUserLang> userLangs  =   userLangList.stream()
+                        .filter(distinctByKey(userlang-> userlang.getOriginLocale() +":"+ userlang.getTargetLocale()))
+                        .map(securityUserLang -> {
+                    securityUserLang.setUserId(userId);
+                    return securityUserLang;
+                }).collect(Collectors.toList());
+```
+
+
+
+
+
+
+
 ### 1.2 取最大值
 
 ```
@@ -60,6 +92,18 @@ securityResourceList.stream().sorted(Comparator.comparing(SecurityResource::getD
 ```
 
 
+
+（2）自定义排序
+
+```
+public class Sort {
+    
+    public List<User> sort(List<User> users){
+        return users.stream().sorted((u1, u2) -> u1.getCreatedTime().compareTo(u2.getCreatedTime())).collect(Collectors.toList());
+    }
+
+}
+```
 
 
 
