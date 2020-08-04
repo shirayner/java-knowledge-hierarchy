@@ -126,9 +126,51 @@ afterTest
 ```
 
 
-### 二、类图
+## 二、基本概念与相关类图
 
-advisorCreator
+### 1.基本概念
+
+参考：
+> - [Spring AOP(一) AOP基本概念](https://segmentfault.com/a/1190000018120725)
+
+基本概念：
+
+> - Join point: 连接点, 也是关注点，目标对象的目标方法
+> - pointcut: 切点，匹配一系列连接点
+> - Weaving：织入, 对关注点的增强过程叫做织入
+> - Advice：即是增强,包括 Before 、After 等增强
+> - Aspect： 切面,是横切关注点的模块化，包括连接点，切点，增强的一个载体.
+> - Target object: 目标对象
+> - AOP proxy: AOP 代理器，包括JDK动态代理器，和CGLIG 动态代理器
+> - Proxy: 代理对象，由代理器创建的代理对象
+
+
+
+简单来讲，整个 aspect 可以描述为:
+
+> 满足 pointcut 规则的 joinpoint 会被添加相应的 advice 操作
+
+
+
+SpringAOP 代理过程：
+
+![两种动态代理的区别](images/bVbocbT)
+
+
+
+
+
+
+
+### 2.相关类图
+
+参考：
+
+> - [SpringBoot2 | Spring AOP 原理深度源码分析（八）](https://juejin.im/post/6844903848566325261#heading-2)
+
+
+
+#### 2.1 advisorCreator
 
 ```plantuml
 @startuml
@@ -164,7 +206,7 @@ class AnnotationAwareAspectJAutoProxyCreator extends AspectJAwareAdvisorAutoProx
 
 
 
-advisor
+#### 2.2 advisor
 
 ```plantuml
 @startuml
@@ -186,7 +228,11 @@ class DefaultPointcutAdvisor extends AbstractGenericPointcutAdvisor
 @enduml
 ```
 
-advice
+
+
+#### 2.3 advice
+
+
 
 
 ```plantuml
@@ -215,7 +261,45 @@ class AspectJAfterAdvice extends AbstractAspectJAdvice implements MethodIntercep
 
 
 
-## 二、AOP 代理对象的创建流程
+
+
+## 三、JDK动态代理与CGLIB动态代理
+
+## 1.代理模式
+
+
+
+![image-20200804093748201](images/image-20200804093748201.png)
+
+
+
+
+
+### 2.1 JDK动态代理
+
+
+
+![image-20200804094055056](images/image-20200804094055056.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 2.2 CGLIB动态代理
+
+
+
+
+
+## 四、AOP 代理对象的创建流程
 
 主要涉及如下流程：
 > (1) 容器创建过程中，注册或升级 AnnotationAwareAspectJAutoProxyCreator
