@@ -174,6 +174,22 @@
 
 
 
+## 2.序列化
+
+（1）对象转JSON
+
+```json
+Model model = new Model();
+model.setAge(25);
+
+List<Model> models = new ArrayList<Model>();
+models.add(model);
+
+ObjectMapper mapper = new ObjectMapper(); 
+String modelStr = mapper.writeValueAsString(model);
+String modelsStr = mapper.writeValueAsString(models);
+```
+
 
 
 

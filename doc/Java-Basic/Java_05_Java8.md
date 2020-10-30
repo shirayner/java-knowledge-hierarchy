@@ -109,6 +109,44 @@ public class Sort {
 
 
 
+## 3.映射
+
+### 3.1 map
+
+将流中每一个元素从一种类型，映射为另一种类型
+
+```java
+List<Long> resuourceIds = securityRoleResourceList.stream().map(SecurityRoleResource::getResourceId).collect(Collectors.toList())
+```
+
+
+
+
+
+### 3.2 flatMap
+
+将流扁平化
+
+> - [java8中stream的map和flatmap的理解](https://www.cnblogs.com/lijingran/p/8727507.html)
+> - [Java8:如何使用flatMap()](https://www.jianshu.com/p/8d80dcb4e7e0)
+
+
+
+```java
+            List<Long> bagTaskInfoIdsInTranslatingAndProjectContainTargetLocale = projectRelationList.stream().filter(projectRelation -> {
+                // if locale in targetLocales then return true
+                List<String> relationTargetLocales = Arrays.asList(projectRelation.getTargetLocales().split(","));
+                Optional<String> inTargetLocaleOptional = relationTargetLocales.stream().filter(targetLocaleList::contains).findAny();
+                if (inTargetLocaleOptional.isPresent()) {
+                    return true;
+                }
+                return false;
+            }).map(projectRelation -> relationIdToBagTaskInfosMap.get(projectRelation.getId()).stream().map(ProjectRelationBagtaskInfo::getBagTaskInfoId).collect(Collectors.toList())).flatMap(Collection::stream).collect(Collectors.toList());
+            return bagTaskInfoIdsInTranslatingAndProjectContainTargetLocale;
+```
+
+
+
 
 
 

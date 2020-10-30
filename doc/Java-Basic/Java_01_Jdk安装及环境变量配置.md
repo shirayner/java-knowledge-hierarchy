@@ -103,6 +103,19 @@ ClassPath=.;%JAVA_HOME%\bin;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar
 
 
 
+## 三、OpenJDK 安装
+
+（1）下载
+
+> - http://openjdk.java.net/install/
+> - http://jdk.java.net/java-se-ri/8-MR3
+
+
+
+（2）安装
+
+OpenJDK 的安装过程与 Oracle Jdk 类似
+
 
 
 
