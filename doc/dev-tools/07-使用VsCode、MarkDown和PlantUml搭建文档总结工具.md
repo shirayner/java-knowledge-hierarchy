@@ -7,7 +7,7 @@
 ## 推荐阅读
 
 > - [在VSCode使用Markdown绘制UML图](https://joven.site/VSCode_UsePlantUMLByMarkdown/)
-> - 
+> - [PlantUML 的安装与使用](https://www.hd2y.net/archives/plantuml-installation-and-use)
 
 
 

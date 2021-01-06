@@ -429,3 +429,66 @@ Maven提供很多的命令行选项支持裁剪反应堆，输入 `mvn -h` 可�
 
 
 
+# 五、注意事项
+
+## 1.构建父子工程时统一管理版本号
+
+> - [Maven project version inheritance - do I have to specify the parent version?](https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version)
+> - [IDEA中pom.xml提示Properties in parent definition are prohibited](https://www.jianshu.com/p/4e04d101532c)
+
+
+
+（1）父模块
+
+```xml
+<project>  
+    <modelVersion>4.0.0</modelVersion>  
+    
+    <groupId>com.juvenxu.mvnbook.account</groupId>  
+    <artifactId>account-parent </artifactId>  
+    <version>${revision}</version>  
+    <packaging>pom</packaging>  
+    
+    <name>Account Parent</name>  
+    
+    <modules>  
+        <module>account-email</module>  
+        <module>account-persist</module>  
+    </modules>  
+    
+    <properties>
+        <revision>1.0.0-SNAPSHOT</revision>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+     </properties>
+</project>
+```
+
+
+
+（2）子模块
+
+```xml
+<project>  
+    <modelVersion>4.0.0</modelVersion>  
+      
+    <parent>  
+        <groupId>com.juvenxu.mvnbook.account</groupId>  
+        <artifactId>account-parent </artifactId>  
+        <version>${revision}</version>  
+        <relativePath >../pom.xml</ relativePath>  
+    </parent>  
+      
+    <artifactId>account-email</artifactId>  
+    <name>Account Email</name>  
+  ...  
+</project>
+```
+
+
+
+
+
+
+
