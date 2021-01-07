@@ -151,11 +151,22 @@ List<Long> resuourceIds = securityRoleResourceList.stream().map(SecurityRoleReso
 
 ## 4.分组
 
+> 分组归一化操作都可用 reducing 
+
+### 4.1分组求最值
+
+> [java stream 处理分组后取每组最大](https://blog.csdn.net/kingmax54212008/article/details/102827306)
+
+```
+Map<String, HitRuleConfig> configMap = configList.parallelStream().collect(
+ 　　　　　　　　　　　　　　Collectors.groupingBy(HitRuleConfig::getAppId, // 先根据appId分组
+　　　　　　　　　　　　　　 Collectors.collectingAndThen(
+　　　　　　　　　　　　　　 Collectors.reducing(( c1,  c2) -> c1.getVersionSort() > c2.getVersionSort() ? c1 : c2), Optional::get)));
+```
 
 
 
-
-
+### 4.2 分组求和
 
 
 

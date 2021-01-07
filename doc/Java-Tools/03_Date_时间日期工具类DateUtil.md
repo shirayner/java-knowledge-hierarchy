@@ -144,7 +144,9 @@
 
 ### 2.计算时间间隔
 
-```
+（1）使用 Period，可计算的时间间隔单位为 `day / month / year`
+
+```java
         LocalDate startDateInclusive = LocalDate.now();
         LocalDate endDateExclusive =  LocalDate.now().plusDays(14);
         Period period = Period.between(startDateInclusive, endDateExclusive);
@@ -156,7 +158,13 @@
 
 
 
+（2）使用 `ChronoUnit`
 
+```java
+        LocalDateTime startTime = LocalDate.now();
+        LocalDateTime endTime =  LocalDate.now().plusDays(14);
+        double intervalHours = ChronoUnit.HOURS.between(startTime, endTime);
+```
 
 
 
