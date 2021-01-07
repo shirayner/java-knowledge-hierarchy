@@ -22,7 +22,7 @@
 
 # 二、U启制作实例
 
-参考：[Win10 正式版系统启动盘制作教程]( https://blog.csdn.net/sunshine_lyn/article/details/81460134 )
+参考：[Win10 正式版系统启动盘制作教程](https://blog.csdn.net/sunshine_lyn/article/details/81460134 )
 
 
 
