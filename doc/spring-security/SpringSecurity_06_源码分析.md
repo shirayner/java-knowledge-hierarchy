@@ -1471,23 +1471,356 @@ public final class DefaultSecurityFilterChain implements SecurityFilterChain {
 
 
 
-### 4.认证流程
+### 4.启动过程总结
+
+（1）注入 DelegatingFilterProxyRegistrationBean 
+
+在启动过程，主要是往容器中注入了一个 DelegatingFilterProxyRegistrationBean 类型的Bean
+
+（2）获取 DelegatingFilterProxy
+
+而在Web容器启动时，会遍历所有Bean，并会根据 DelegatingFilterProxyRegistrationBean  类型的Bean 获取 DelegatingFilterProxy，
+
+```java
+	// DelegatingFilterProxyRegistrationBean 
+    @Override
+	public DelegatingFilterProxy getFilter() {
+		return new DelegatingFilterProxy(this.targetBeanName, getWebApplicationContext()) {
+
+			@Override
+			protected void initFilterBean() throws ServletException {
+				// Don't initialize filter bean on init()
+			}
+
+		};
+	}
+```
 
 
 
+（3）执行过滤器链 `FilterChainProxy`
+
+而 DelegatingFilterProxy 实际上代理了真正的`springSecurityFilterChain`，也即 FilterChainProxy。
+
+过滤器链的入口如下：
+
+```java
+	// FilterChainProxy
+    @Override
+	public void doFilter(ServletRequest request, ServletResponse response,
+			FilterChain chain) throws IOException, ServletException {
+		boolean clearContext = request.getAttribute(FILTER_APPLIED) == null;
+		if (clearContext) {
+			try {
+				request.setAttribute(FILTER_APPLIED, Boolean.TRUE);
+				doFilterInternal(request, response, chain);
+			}
+			finally {
+				SecurityContextHolder.clearContext();
+				request.removeAttribute(FILTER_APPLIED);
+			}
+		}
+		else {
+			doFilterInternal(request, response, chain);
+		}
+	}
+
+	private void doFilterInternal(ServletRequest request, ServletResponse response,
+			FilterChain chain) throws IOException, ServletException {
+
+		FirewalledRequest fwRequest = firewall
+				.getFirewalledRequest((HttpServletRequest) request);
+		HttpServletResponse fwResponse = firewall
+				.getFirewalledResponse((HttpServletResponse) response);
+
+        // <1> 获取过滤器链
+		List<Filter> filters = getFilters(fwRequest);
+
+		if (filters == null || filters.size() == 0) {
+			if (logger.isDebugEnabled()) {
+				logger.debug(UrlUtils.buildRequestUrl(fwRequest)
+						+ (filters == null ? " has no matching filters"
+								: " has an empty filter list"));
+			}
+
+			fwRequest.reset();
+
+			chain.doFilter(fwRequest, fwResponse);
+
+			return;
+		}
+
+		VirtualFilterChain vfc = new VirtualFilterChain(fwRequest, chain, filters);
+        // <2> 执行过滤器链
+		vfc.doFilter(fwRequest, fwResponse);
+	}
+```
 
 
 
+<1> 获取过滤器链，具体的过滤器链是启动时根据`Configurer`构建的，包含如下Filter
+
+```java
+WebAsyncManagerIntegrationFilter
+SecurityContextPersistenceFilter
+HeaderWriterFilter
+LogoutFilter
+UsernamePasswordAuthenticationFilter
+RequestCacheAwareFilter
+SecurityContextHolderAwareRequestFilter
+RememberMeAuthenticationFilter
+AnonymousAuthenticationFilter
+SessionManagementFilter
+ExceptionTranslationFilter
+FilterSecurityInterceptor
+```
 
 
 
+<2> 接着就是执行过滤器链
+
+## 三、认证流程源码分析
+
+前面我们知道了过滤器链执行的入口，以及过滤器链的组成。那么我们就可以开始对认证流程进行分析
+
+```plantuml
+@startuml
+participant AbstractAuthenticationProcessingFilter
+participant UsernamePasswordAuthenticationFilter
+
+
+[->AbstractAuthenticationProcessingFilter++: doFilter
+AbstractAuthenticationProcessingFilter -> AbstractAuthenticationProcessingFilter: requiresAuthentication
+AbstractAuthenticationProcessingFilter -> UsernamePasswordAuthenticationFilter++: attemptAuthentication
+UsernamePasswordAuthenticationFilter -> ProviderManager++: authenticate
+ProviderManager -> AbstractUserDetailsAuthenticationProvider++: authenticate
+AbstractUserDetailsAuthenticationProvider -> DaoAuthenticationProvider++: 1.retrieveUser
+DaoAuthenticationProvider -> UserDetailsService++: loadUserByUsername
+return
+return
+
+AbstractUserDetailsAuthenticationProvider -> UserDetailsChecker++: check
+return
+AbstractUserDetailsAuthenticationProvider -> DaoAuthenticationProvider++: 2.additionalAuthenticationChecks
+DaoAuthenticationProvider -> PasswordEncoder++: matches
+return 
+return
+AbstractUserDetailsAuthenticationProvider -> DaoAuthenticationProvider++: 3.createSuccessAuthentication
+return
+return
+return
+return
+AbstractAuthenticationProcessingFilter -> CompositeSessionAuthenticationStrategy++: onAuthentication
+CompositeSessionAuthenticationStrategy -> AbstractSessionFixationProtectionStrategy++: onAuthentication
+AbstractSessionFixationProtectionStrategy -> ChangeSessionIdAuthenticationStrategy++: applySessionFixation
+return
+return
+return
+AbstractAuthenticationProcessingFilter -> AbstractAuthenticationProcessingFilter: unsuccessfulAuthentication
+AbstractAuthenticationProcessingFilter -> AbstractAuthenticationProcessingFilter: successfulAuthentication
+return
+
+@enduml
+```
 
 
 
+(1) attemptAuthentication
+
+```java
+	public Authentication attemptAuthentication(HttpServletRequest request,
+			HttpServletResponse response) throws AuthenticationException {
+		if (postOnly && !request.getMethod().equals("POST")) {
+			throw new AuthenticationServiceException(
+					"Authentication method not supported: " + request.getMethod());
+		}
+		// 获取请求的用户名
+		String username = obtainUsername(request);
+		// 获取请求的密码
+		String password = obtainPassword(request);
+
+		if (username == null) {
+			username = "";
+		}
+
+		if (password == null) {
+			password = "";
+		}
+
+		username = username.trim();
+		// 根据用户名和密码构建 UsernamePasswordAuthenticationToken
+		UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
+				username, password);
+
+		// Allow subclasses to set the "details" property
+		setDetails(request, authRequest);
+
+		//使用 AuthenticationManager 去执行认证逻辑, 其具体实现类为 ProviderManager. ProviderManager 主要是管理 AuthenticationProvider。 
+		//具体认证逻辑的执行需要借助其实现类DaoAuthenticationProvider
+		return this.getAuthenticationManager().authenticate(authRequest);
+	}
+
+```
+
+(2) retrieveUser
+```java
+	protected final UserDetails retrieveUser(String username,
+			UsernamePasswordAuthenticationToken authentication)
+			throws AuthenticationException {
+		prepareTimingAttackProtection();
+		try {
+			// 启动时会注入自定义或者默认的 UserDetailsService 接口的实现类，然后借其根据用户名加载 UserDetails
+			UserDetails loadedUser = this.getUserDetailsService().loadUserByUsername(username);
+			if (loadedUser == null) {
+				throw new InternalAuthenticationServiceException(
+						"UserDetailsService returned null, which is an interface contract violation");
+			}
+			return loadedUser;
+		}
+		catch (UsernameNotFoundException ex) {
+			mitigateAgainstTimingAttack(authentication);
+			throw ex;
+		}
+		catch (InternalAuthenticationServiceException ex) {
+			throw ex;
+		}
+		catch (Exception ex) {
+			throw new InternalAuthenticationServiceException(ex.getMessage(), ex);
+		}
+	}
+```
+
+(3) check
+
+验证密码之前会验证下账号的有效性
+
+```java
+	private class DefaultPreAuthenticationChecks implements UserDetailsChecker {
+		public void check(UserDetails user) {
+			if (!user.isAccountNonLocked()) {
+				logger.debug("User account is locked");
+
+				throw new LockedException(messages.getMessage(
+						"AbstractUserDetailsAuthenticationProvider.locked",
+						"User account is locked"));
+			}
+
+			if (!user.isEnabled()) {
+				logger.debug("User account is disabled");
+
+				throw new DisabledException(messages.getMessage(
+						"AbstractUserDetailsAuthenticationProvider.disabled",
+						"User is disabled"));
+			}
+
+			if (!user.isAccountNonExpired()) {
+				logger.debug("User account is expired");
+
+				throw new AccountExpiredException(messages.getMessage(
+						"AbstractUserDetailsAuthenticationProvider.expired",
+						"User account has expired"));
+			}
+		}
+	}
+
+```
+
+(4) additionalAuthenticationChecks
+借助 PasswordEncoder 比对用户传过来的密码与根据用户名加载的密码,通过则认证成功。
+
+```java
+	protected void additionalAuthenticationChecks(UserDetails userDetails,
+			UsernamePasswordAuthenticationToken authentication)
+			throws AuthenticationException {
+		if (authentication.getCredentials() == null) {
+			logger.debug("Authentication failed: no credentials provided");
+
+			throw new BadCredentialsException(messages.getMessage(
+					"AbstractUserDetailsAuthenticationProvider.badCredentials",
+					"Bad credentials"));
+		}
+
+		String presentedPassword = authentication.getCredentials().toString();
+
+		if (!passwordEncoder.matches(presentedPassword, userDetails.getPassword())) {
+			logger.debug("Authentication failed: password does not match stored value");
+
+			throw new BadCredentialsException(messages.getMessage(
+					"AbstractUserDetailsAuthenticationProvider.badCredentials",
+					"Bad credentials"));
+		}
+	}
+```
 
 
+(5) sessionStrategy.onAuthentication
+
+认证成功后，若之前已存在Session，也就是说重新登录之后，需要更新SessionId
+
+```java
+	HttpSession applySessionFixation(HttpServletRequest request) {
+		//更新SessionId
+		request.changeSessionId();
+		return request.getSession();
+	}
+```
+
+(6) successfulAuthentication
+
+认证成功后，会将认证信息放入
+
+```java
+	protected void successfulAuthentication(HttpServletRequest request,
+			HttpServletResponse response, FilterChain chain, Authentication authResult)
+			throws IOException, ServletException {
+
+		if (logger.isDebugEnabled()) {
+			logger.debug("Authentication success. Updating SecurityContextHolder to contain: "
+					+ authResult);
+		}
+
+		// 将认证结果放入 SecurityContextHolder，内部存储结构为 ThreadLocal，因此认证结果可在线程内共享
+		SecurityContextHolder.getContext().setAuthentication(authResult);
+
+		rememberMeServices.loginSuccess(request, response, authResult);
+
+		// Fire event
+		if (this.eventPublisher != null) {
+			eventPublisher.publishEvent(new InteractiveAuthenticationSuccessEvent(
+					authResult, this.getClass()));
+		}
+
+		// 执行认证成功处理器，默认是认证成功后重定向至目标页面
+		successHandler.onAuthenticationSuccess(request, response, authResult);
+	}
+
+```
 
 
+(7) 认证失败
+
+
+```java
+	/**
+	*  认证失败时，会抛出异常，然后执行 unsuccessfulAuthentication
+	*/
+	protected void unsuccessfulAuthentication(HttpServletRequest request,
+			HttpServletResponse response, AuthenticationException failed)
+			throws IOException, ServletException {
+		// 清空认证信息
+		SecurityContextHolder.clearContext();
+
+		if (logger.isDebugEnabled()) {
+			logger.debug("Authentication request failed: " + failed.toString(), failed);
+			logger.debug("Updated SecurityContextHolder to contain null Authentication");
+			logger.debug("Delegating to authentication failure handler " + failureHandler);
+		}
+
+		rememberMeServices.loginFail(request, response);
+		// 执行认证失败处理器，默认会重定向到 /login?error
+		failureHandler.onAuthenticationFailure(request, response, failed);
+	}
+```
 
 
 
