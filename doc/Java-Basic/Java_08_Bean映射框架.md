@@ -18,6 +18,23 @@
 
 
 
+## 一、MapStruct
+
+### 推荐阅读
+
+> - [mapstruct 实体转换及List转换，@Mapper注解转换](https://www.cnblogs.com/junzhu-bye/p/12900950.html)
+> - 
+
+
+
+
+
+### 注意事项
+
+> - [Mapstruct中使用lombok@Builder的坑](https://www.jianshu.com/p/4f7b4f4bf689)
+
+
+
 
 
 
