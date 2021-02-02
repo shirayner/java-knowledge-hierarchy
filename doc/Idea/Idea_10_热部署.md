@@ -72,3 +72,12 @@
 
 
 
+## 二、异常
+
+可能会出现：
+
+```
+JDWP exit error JVMTI_ERROR_INVALID_THREAD(10): cannot get thread local storage [threadControl.c:195]
+FATAL ERROR in native method: JDWP cannot get thread local storage, jvmtiError=JVMTI_ERROR_INVALID_THREAD(10)
+```
+

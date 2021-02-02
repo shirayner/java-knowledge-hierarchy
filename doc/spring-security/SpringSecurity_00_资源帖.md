@@ -24,6 +24,7 @@
 3. [springboot整合springsecurity系列文章](https://www.jianshu.com/p/e2371000f133)
 4. [【spring boot 系列】spring security 实践 + 源码分析](https://segmentfault.com/a/1190000015191298)
 6. [Spring Security系列](https://github.com/longfeizheng/logback)
+6. [Spring boot 中 Spring Security 使用改造5部曲(转)](https://www.cnblogs.com/jpfss/p/9045771.html)
 
 
 
