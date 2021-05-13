@@ -8,6 +8,8 @@
 
 java-knowledge-hierarchy  即 java 知识体系，主要是关于java的一些读书笔记、学习总结等。
 
+已迁移至新仓库 https://github.com/shirayner/snote
+
 
 
 # 一、计算机基础
